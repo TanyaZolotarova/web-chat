@@ -1,0 +1,9 @@
+.form-staff{
+    display: block;
+    margin: 0 auto;
+    width: 500px;
+    border: 1px solid #cacaca;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+}
