@@ -30,3 +30,26 @@
 .height100{
     height: 100%;
 }
+
+.nav-user{
+    width: 30%;
+}
+
+.nav-chat{
+    width: 70%;
+    background-color: gray;
+}
+
+.bg-white{
+    background-color: white;
+}
+
+.chat-input{
+    width: 70%;
+    position: absolute;
+    bottom: 0;
+}
+
+.space{
+    margin-top: 25px;
+}
