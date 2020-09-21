@@ -1,0 +1,55 @@
+.main-staff{
+    display: block;
+    margin: 0 auto;
+    width: 50%;
+    position: relative;
+    background-color: #fff;
+    margin-bottom: 10px;
+}
+
+.direction{
+    display: flex;
+    align-items: stretch;
+    box-sizing: border-box;
+}
+
+.users-block{
+    width: 30%;
+    max-height: 50%;
+    overflow-x: scroll;
+    background-color: gray;
+}
+
+.chat-block{
+    width: 70%;
+    max-height: 50%;
+    overflow-x: scroll;
+    background-color: black;
+}
+
+.height100{
+    height: 100%;
+}
+
+.nav-user{
+    width: 30%;
+}
+
+.nav-chat{
+    width: 70%;
+    background-color: gray;
+}
+
+.bg-white{
+    background-color: white;
+}
+
+.chat-input{
+    width: 70%;
+    position: absolute;
+    bottom: 0;
+}
+
+.space{
+    margin-top: 25px;
+}
