@@ -1,9 +1,32 @@
-.form-staff{
+.main-staff{
     display: block;
     margin: 0 auto;
-    width: 500px;
-    border: 1px solid #cacaca;
+    width: 50%;
+    position: relative;
     background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.direction{
+    display: flex;
+    align-items: stretch;
+    box-sizing: border-box;
+}
+
+.users-block{
+    width: 30%;
+    max-height: 50%;
+    overflow-x: scroll;
+    background-color: gray;
+}
+
+.chat-block{
+    width: 70%;
+    max-height: 50%;
+    overflow-x: scroll;
+    background-color: black;
+}
+
+.height100{
+    height: 100%;
 }
