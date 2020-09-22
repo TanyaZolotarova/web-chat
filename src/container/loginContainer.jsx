@@ -1,9 +1,9 @@
 import React from "react";
-import "./Login.css"
 
-class Login extends React.Component{
- render() {
+
+export const LoginContainer = ({}) => {
      return(
+         <div>
               <form className="form-staff">
                   <div className="form-group">
                       <fieldset>
@@ -23,8 +23,8 @@ class Login extends React.Component{
                   <button type="submit" className="btn btn-primary width-100 margin-top10">Google</button>
                   <button type="submit" className="btn btn-primary width-100 margin-top10">Facebook</button>
               </form>
+     </div>
      );
- }
 }
 
-export default Login;
+export default LoginContainer;
