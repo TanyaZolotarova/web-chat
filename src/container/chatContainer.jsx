@@ -184,10 +184,10 @@ const ChatContainer = ({}) => {
                             messages.map((m, ) => {
                                 return (
                                     <ul>
-                                        <span className="float-right">{m.name} </span>
                                         <li className="replies">
                                             <img src="https://rozetked.me/images/uploads/dwoilp3BVjlE.jpg" alt=""/>
-                                            <p className="p"> <span className="messages-span"> </span> {m.message}</p>
+
+                                            <p className="p"><span className="float-right2 user-name-text">{m.name} </span> <span className="messages-span float-right "> </span> {m.message}</p>
                                         </li>
                                     </ul>
                                         );

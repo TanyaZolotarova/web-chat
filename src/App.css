@@ -103,9 +103,12 @@
   margin-top: 10px;
 }
 
-.float-right{
+.float-right2{
+  display: block;
+}
 
-  float: right;
+.user-name-text{
+  font-size: 10px;
 }
 
 .body {
@@ -640,7 +643,6 @@ ul{
 @media screen and (max-width: 735px) {
   #frame .content {
     width: calc(100% - 58px);
-    min-width: 300px !important;
   }
 }
 @media screen and (min-width: 900px) {
@@ -704,7 +706,7 @@ ul{
   display: inline-block;
   clear: both;
   float: left;
-  margin: 0 15px 5px 15px;
+  margin: 0 15px 0 15px;
   width: calc(100% - 25px);
   font-size: 0.9em;
   list-style-type: none;
@@ -721,7 +723,7 @@ ul{
 }
 #frame .content .messages ul li.replies img {
   float: right;
-  margin: 6px 0 0 8px;
+  margin: 21px 0 0 8px;
 }
 #frame .content .messages ul li.replies p {
   background: #f5f5f5;
