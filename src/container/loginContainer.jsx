@@ -1,8 +1,20 @@
 import React from "react";
 import connect from "react-redux/lib/connect/connect";
-
+import { GoogleLogin } from 'react-google-login';
+import {useDispatch} from "react-redux";
+import {signInGoogleRequest} from "../actions/userActions";
 
 export const LoginContainer = ({}) => {
+
+    const dispatch = useDispatch()
+
+    const responseGoogle = (response) => {
+        const { name } = response.profileObj;
+        console.log(response);
+        dispatch(signInGoogleRequest(name));
+    }
+
+
      return(
          <div>
               <form className="form-staff">
@@ -21,8 +33,13 @@ export const LoginContainer = ({}) => {
                       </fieldset>
                   </div>
                   <button type="submit" className="btn btn-primary width-100">Submit</button>
-                  <button type="submit" className="btn btn-primary width-100 margin-top10">Google</button>
-                  <button type="submit" className="btn btn-primary width-100 margin-top10">Facebook</button>
+                  <GoogleLogin
+                      clientId="216757630496-asjs0cafllgi8hr0bpgjk9e7jj0upkae.apps.googleusercontent.com"
+                      buttonText="Залогиниться через Google"
+                      onSuccess={responseGoogle}
+                      onFailure={responseGoogle}
+                  />
+
               </form>
      </div>
      );
