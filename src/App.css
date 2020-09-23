@@ -714,6 +714,11 @@ ul{
   font-size: 0.9em;
   list-style-type: none;
 }
+
+.message-marg-top{
+  margin-bottom: 11px;
+}
+
 #frame .content .messages ul li:nth-last-child(1) {
   margin-top: 5px;
   /*margin-bottom: 20px;*/
@@ -735,7 +740,7 @@ ul{
 }
 #frame .content .messages ul li img {
   height: 45px;
-  width: 51px;
+  width: 47px;
   border-radius: 50%;
   float: left;
 }

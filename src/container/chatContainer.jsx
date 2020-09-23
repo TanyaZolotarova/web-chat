@@ -164,7 +164,7 @@ const ChatContainer = ({}) => {
                     </div>
                 </div>
                 <div className="content">
-                    <div className="contact-profile">
+                    <div className="contact-profile message-marg-top">
                         <img src="//from db" alt=""/>
                         <p>
                             // this chat-name from DB
