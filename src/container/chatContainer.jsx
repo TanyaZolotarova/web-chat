@@ -108,7 +108,7 @@ const ChatContainer = ({  }) => {
                         </ul>
                     </div>
                     <div id="bottom-bar">
-                        <button id="addcontact"><span> Создать чат </span>
+                        <button id="addcontact" data-toggle="modal" data-target="#createChatModal"><span> Создать чат </span>
                         </button>
                     </div>
                 </div>
