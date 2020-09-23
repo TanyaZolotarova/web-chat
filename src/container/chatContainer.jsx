@@ -1,29 +1,42 @@
 import React, {useEffect, useState} from "react";
+import MessageListComponent from "./components/messageListComponent";
+import connect from "react-redux/lib/connect/connect";
+import {LoginContainer} from "./loginContainer";
 
-const ChatContainer = ({}) => {
 
-    const [message, setMessage] = useState({});
+const ChatContainer = ({  }) => {
 
     const [users, setUsers] = useState([]);
 
-    console.log("users", users);
-
     const [error, setError] = useState({});
+
+    const [chat, setChat] = useState([]);
+
+    const [activeChatID, setActiveChatID] = useState(null);
 
     const getChatData = () => {
         return JSON.parse(localStorage.getItem("chatData"));
     };
 
-    const messages = [{message: 'Helloadfjhaskjfbhfjasfkjasbhfkjasdhfkjashfffflsfjhflasdhfjasdfghasvfdghasdvf', id: 1, name: 'Anna'} , {message: 'Hi!', id: 2, name: "Andre"}]
+    const isOnline = true;
 
-    const handleChange = (event) => {
-        const {target} = event;
-        setMessage( {...message, [target.name]: target.value}
-        )
-    }
+    const chats = [
+        {id: 1,
+            is_group_chat: true,
+            chat_name: "cats",
+            creator_id: 1,
+            image: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?r=pg',
+            messages: [{message: 'Hello', id: 23, name: '53eeeeeeeeeee4353'} ,
+                {message: 'Hi!', id: 25, name: "eeeeeeeeeee"}]},
+        {id: 2,
+            is_group_chat: false,
+            chat_name: "Root",
+            creator_id: 2,
+            image: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?r=pg',
+            messages:
+                [{message: 'Hello', id: 1, name: '534353'} ,
+                    {message: 'Hi!', id: 2, name: "123123"}] }];
 
-    const handleSubmit = () => {
-    }
 
     useEffect(() => {
         fetch("http://192.168.0.109:8000/users")
@@ -31,6 +44,7 @@ const ChatContainer = ({}) => {
             .then(
                 (result) => {
                     setUsers(result);
+
                     console.log("users----result", result);
                 },
                 (error) => {
@@ -53,8 +67,6 @@ const ChatContainer = ({}) => {
                                 <ul>
                                     <li id="status-online" className="active"><span className="status-circle"></span>
                                         <p>Online</p></li>
-                                    <li id="status-away"><span className="status-circle"></span> <p>Away</p></li>
-                                    <li id="status-busy"><span className="status-circle"></span> <p>Busy</p></li>
                                     <li id="status-offline"><span className="status-circle"></span> <p>Offline</p></li>
                                 </ul>
                             </div>
@@ -104,37 +116,24 @@ const ChatContainer = ({}) => {
                     </div>
                     <div id="contacts">
                         <ul>
-                            <li className="contact">
-                                <div className="wrap">
-                                    <span className="contact-status online"></span>
-                                    <img src="https://primamedia.gcdn.co/f/main/1937/1936556.jpg?ca2c24aa472396beadfd4a5eb8bf8a22" alt=""/>
-                                    <div className="meta">
-                                        <p className="name">Вася</p>
-                                        <p className="preview">Как дела? </p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li className="contact active">
-                                <div className="wrap">
-                                    <span className="contact-status busy"></span>
-                                    <img src="https://primamedia.gcdn.co/f/main/1937/1936556.jpg?ca2c24aa472396beadfd4a5eb8bf8a22" alt=""/>
-                                    <div className="meta">
-                                        <p className="name">Алиса Викторовна</p>
-                                        <p className="preview"> Ты плохой человек. </p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li className="contact">
-                                <div className="wrap">
-                                    <span className="contact-status away"></span>
-                                    <img src="https://primamedia.gcdn.co/f/main/1937/1936556.jpg?ca2c24aa472396beadfd4a5eb8bf8a22" alt=""/>
-                                    <div className="meta">
-                                        <p className="name">Катя</p>
-                                        <p className="preview">Привет</p>
-                                    </div>
-                                </div>
-                            </li>
-
+                            {
+                                chats.map((chat, ) => {
+                                    return(
+                                        <li className = { chat.id === activeChatID ? 'contact active' : "contact"}
+                                            onClick={() => {setActiveChatID(chat.id)}} >
+                                            <div className="wrap">
+                                                <span className= {isOnline ? 'contact-status online' : 'contact-status offline'}> </span>
+                                                <img src={chat.image}
+                                                     alt=""/>
+                                                <div className="meta">
+                                                    <p className="name">{chat.is_group_chat ? chat.chat_name : chat.creator_id}</p>
+                                                    <p className="preview"> //some text. how it gets </p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    )
+                                })
+                            }
                         </ul>
                     </div>
                     <div id="bottom-bar">
@@ -142,68 +141,17 @@ const ChatContainer = ({}) => {
                         </button>
                     </div>
                 </div>
-                {/*Модальное окно создания чата*/}
-                <div className="modal fade" id="createChatModal" tabIndex="-1" role="dialog"
-                     aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div className="modal-dialog">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h5 className="modal-title" id="exampleModalLabel">Создать чат</h5>
-                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true"></span>
-                                </button>
-                            </div>
-                            <div className="modal-body">
-                                ...
-                            </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" className="btn btn-primary">Save changes</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="content">
-                    <div className="contact-profile message-marg-top">
-                        <img src="//from db" alt=""/>
-                        <p>
-                            // this chat-name from DB
-                            {/*Chat Room: {getChatData().chat_name}. Chat Handle:{" "}*/}
-                            //             {/*{getChatData().handle}*/}
-                        </p>
-                    </div>
-                    <div className="messages">
-                        {
-                            //if id !== this.user id , if is == this.user id  <li className="sent">
-                            //                                                 <img src="//img from db" alt=""/>
-                            //                                                 <p> {m.name} </p>
-                            //                                                 <p>How the hell am I supposed to get a jury to believe you when I am not even sure that
-                            //                                                     I do?!</p>
-                            //                                             </li>
-
-                            messages.map((m, ) => {
-                                return (
-                                    <ul>
-                                        <li className="replies">
-                                            <img src="https://rozetked.me/images/uploads/dwoilp3BVjlE.jpg" alt=""/>
-
-                                            <p className="p"><span className="float-right2 user-name-text">{m.name} </span> <span className="messages-span float-right "> </span> {m.message}</p>
-                                        </li>
-                                    </ul>
-                                        );
-                                        })}
-
-                                    </div>
-                                <div className="message-input">
-                                    <div className="wrap">
-                                        <input type="text" placeholder="Напишите сообщение..." onChange={handleChange}/>
-                                        <button>  <span style={{fontSize: 19}} className="material-icons icon-bar md-18">send</span> </button>
-                                    </div>
-                                </div>
-                            </div>
+                {activeChatID && <MessageListComponent activeChat={activeChatID} chat={chats.find(el => el.id === activeChatID)}/>}
                             </div>
                             </div>
                             );
 }
 
- export default ChatContainer;
+const mapStateToProps = () => {
+    return {
+    };
+};
+
+export default ChatContainer;
+
+// export default connect(mapStateToProps, {  })(ChatContainer);
