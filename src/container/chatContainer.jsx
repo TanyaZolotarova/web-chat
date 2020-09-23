@@ -14,7 +14,7 @@ const ChatContainer = ({}) => {
         return JSON.parse(localStorage.getItem("chatData"));
     };
 
-    const messages = [{message: 'Hello', id: 1, name: 'Anna'} , {message: 'Hi!', id: 2, name: "Andre"}]
+    const messages = [{message: 'Helloadfjhaskjfbhfjasfkjasbhfkjasdhfkjashfffflsfjhflasdhfjasdfghasvfdghasdvf', id: 1, name: 'Anna'} , {message: 'Hi!', id: 2, name: "Andre"}]
 
     const handleChange = (event) => {
         const {target} = event;
@@ -26,7 +26,7 @@ const ChatContainer = ({}) => {
     }
 
     useEffect(() => {
-        fetch("http://localhost:8000/users")
+        fetch("http://192.168.0.109:8000/users")
             .then(res => res.json())
             .then(
                 (result) => {
@@ -100,7 +100,7 @@ const ChatContainer = ({}) => {
                     </div>
                     <div id="search">
                         <label htmlFor=""><i className="fa fa-search" aria-hidden="true"></i></label>
-                        <input type="text" placeholder="Найдите человека или чат"/>
+                        <input type="text" placeholder="Поиск"/>
                     </div>
                     <div id="contacts">
                         <ul>
@@ -150,7 +150,7 @@ const ChatContainer = ({}) => {
                             <div className="modal-header">
                                 <h5 className="modal-title" id="exampleModalLabel">Создать чат</h5>
                                 <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
+                                    <span aria-hidden="true"></span>
                                 </button>
                             </div>
                             <div className="modal-body">
@@ -197,7 +197,7 @@ const ChatContainer = ({}) => {
                                 <div className="message-input">
                                     <div className="wrap">
                                         <input type="text" placeholder="Напишите сообщение..." onChange={handleChange}/>
-                                        <button>  <span className="material-icons icon-bar md-18">send</span> </button>
+                                        <button>  <span style={{fontSize: 19}} className="material-icons icon-bar md-18">send</span> </button>
                                     </div>
                                 </div>
                             </div>
