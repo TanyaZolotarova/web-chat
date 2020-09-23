@@ -1,4 +1,5 @@
 import React from "react";
+import connect from "react-redux/lib/connect/connect";
 
 
 export const LoginContainer = ({}) => {
@@ -27,4 +28,10 @@ export const LoginContainer = ({}) => {
      );
 }
 
+const mapStateToProps = (state) => {
+    return {
+    };
+};
+
+// export default connect(mapStateToProps, {  })(LoginContainer);
 export default LoginContainer;
