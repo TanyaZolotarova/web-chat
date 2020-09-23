@@ -39,7 +39,7 @@ const ChatContainer = ({  }) => {
 
 
     useEffect(() => {
-        fetch("http://localhost:8000/users")
+        fetch("http://192.168.0.109:8000/users")
             .then(res => res.json())
             .then(
                 (result) => {
@@ -60,7 +60,7 @@ const ChatContainer = ({  }) => {
                     <div id="profile">
                         <div className="wrap">
                             <img id="profile-img" src="https://primamedia.gcdn.co/f/main/1937/1936556.jpg?ca2c24aa472396beadfd4a5eb8bf8a22" className="online"
-                                 alt=""/>
+                                 alt="" data-toggle="collapse" data-target="#multiCollapseExample1" aria-controls="multiCollapseExample1"/>
                             <p>// this user name from db </p>
                             <i className="fa fa-chevron-down expand-button" aria-hidden="true"></i>
                             <div id="status-options">
@@ -71,19 +71,48 @@ const ChatContainer = ({  }) => {
                                 </ul>
                             </div>
                             {/*редактирование профиля */}
-                            <div id="expanded">
-                                <label htmlFor="twitter"></label>
-                                <input name="twitter" type="text" value="mikeross"/>
-                                <label htmlFor="twitter"></label>
-                                <input name="twitter" type="text" value="ross81"/>
-                                <label htmlFor="twitter"></label>
-                                <input name=".." type="text" value="..."/>
+                            {/*<div id="expanded">*/}
+                            {/*    <label htmlFor="twitter"></label>*/}
+                            {/*    <input name="twitter" type="text" value="mikeross"/>*/}
+                            {/*    <label htmlFor="twitter"></label>*/}
+                            {/*    <input name="twitter" type="text" value="ross81"/>*/}
+                            {/*    <label htmlFor="twitter"></label>*/}
+                            {/*    <input name=".." type="text" value="..."/>*/}
+                            {/*</div>*/}
+                        </div>
+                        {/*Модальное окно редактирования юзера*/}
+                        {/*<div className="modal fade" id="changeProfileModal" tabIndex="-1" role="dialog"*/}
+                        {/*     aria-labelledby="exampleModalLabel" aria-hidden="true">*/}
+                        {/*    <div className="modal-dialog">*/}
+                        {/*        <div className="modal-content">*/}
+                        {/*            <div className="modal-header">*/}
+                        {/*                <h5 className="modal-title" id="exampleModalLabel">Создать чат</h5>*/}
+                        {/*                <button type="button" className="close" data-dismiss="modal" aria-label="Close">*/}
+                        {/*                    <span aria-hidden="true">&times;</span>*/}
+                        {/*                </button>*/}
+                        {/*            </div>*/}
+                        {/*            <div className="modal-body">*/}
+                        {/*                ...*/}
+                        {/*            </div>*/}
+                        {/*            <div className="modal-footer">*/}
+                        {/*                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>*/}
+                        {/*                <button type="button" className="btn btn-primary">Save changes</button>*/}
+                        {/*            </div>*/}
+                        {/*        </div>*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
+                        <div className="collapse multi-collapse" id="multiCollapseExample1">
+                            <div className="">
+                                <input type="text" className="form-control"
+                                       aria-label="Имя пользователя" aria-describedby="basic-addon1"/>
+                                <input type="text" className="form-control space"
+                                       aria-label="Имя пользователя" aria-describedby="basic-addon1"/>
                             </div>
                         </div>
                     </div>
                     <div id="search">
                         <label htmlFor=""><i className="fa fa-search" aria-hidden="true"></i></label>
-                        <input type="text" placeholder="Найдите человека или чат"/>
+                        <input type="text" placeholder="Поиск"/>
                     </div>
                     <div id="contacts">
                         <ul>
@@ -108,7 +137,7 @@ const ChatContainer = ({  }) => {
                         </ul>
                     </div>
                     <div id="bottom-bar">
-                        <button id="addcontact"><span> Создать чат </span>
+                        <button id="addcontact" data-toggle="modal" data-target="#createChatModal"><span> Создать чат </span>
                         </button>
                     </div>
                 </div>
