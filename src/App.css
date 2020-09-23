@@ -136,6 +136,20 @@
   color: #243140;
 }
 
+.name-block{
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.margin-bottom10{
+  margin-bottom: 10px;
+}
+
+.icon-size{
+  font-size: 15px;
+}
+
 @media screen and (max-width: 360px) {
   #frame {
     width: 100%;

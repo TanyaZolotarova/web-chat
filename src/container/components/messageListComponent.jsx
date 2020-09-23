@@ -35,7 +35,7 @@ function MessageListComponent({activeChat, chat}) {
 
     return (
         <div className="content">
-            <div className="contact-profile">
+            <div className="contact-profile margin-bottom10">
                 <img src="//from db" alt=""/>
                 <p>
                     {chat.chat_name}
@@ -50,7 +50,7 @@ function MessageListComponent({activeChat, chat}) {
                             <ul >
                                 <li className="replies" >
                                     <img src="https://rozetked.me/images/uploads/dwoilp3BVjlE.jpg" alt="" />
-                                    <p className="p"><span className="messages-span" > {m.name}:  </span> {m.message}
+                                    <p className="p"> <span className="name-block">{m.name}:</span><span className="messages-span" > </span> {m.message}
                                     </p>
                                 </li>
                             </ul>
@@ -70,9 +70,8 @@ function MessageListComponent({activeChat, chat}) {
 
                     />
                     <button onClick={handleSubmit}>
-                        <span className="material-icons pb-2">send</span>
+                        <span className="material-icons pb-2 icon-size">send</span>
                     </button>
-
                 </div>
             </div>
         </div>
