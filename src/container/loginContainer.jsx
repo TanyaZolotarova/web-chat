@@ -14,7 +14,6 @@ export const LoginContainer = ({}) => {
         dispatch(signInGoogleRequest(name));
     }
 
-
      return(
          <div>
               <form className="form-staff">
