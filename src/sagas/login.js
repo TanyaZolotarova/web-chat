@@ -5,11 +5,16 @@ import { login } from '../service/api.service';
 function* getCurrentUserGoogle(action) {
     console.log('action ', action)
     try {
+
         const user = {
-            user_name: action.name
-        } //запрос на сервер, в котором ты отправишь name get("/login", action.name)
+            email: action.user.email,
+            googleId: action.user.id,
+            name: action.user.name,
+        }
+
+        //add to response action.google.Id
         console.log('user ', user)
-        const response = yield call(login, action.name);
+        const response = yield call(login, user);
 
         // const token = response.token \\ add to lockal storage
 
