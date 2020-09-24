@@ -8,6 +8,7 @@ socket.on('connect', () => {
 
 function MessageListComponent({}) {
 
+
     const [message, setMessage] = useState({text: '', id: '', name: ''});
     const [chat, setChat] = useState([]);
 
@@ -18,6 +19,7 @@ function MessageListComponent({}) {
     const handleMessage = (messData) => {
         console.log('===[ messData ]=====>', messData);
         setChat([...chat, {...messData}])
+        console.log("========[ AFTER setChat ]=======", chat);
     };
 
     const onTextChange = e => {
@@ -31,6 +33,7 @@ function MessageListComponent({}) {
         console.log('===[ onMessageSubmit ]=====>', message);
         socket.emit('message', {name, id, text})                      // emit 'event' - send to  ==> server
         setMessage({text: '', id: '', name})
+        console.log("========[ AFTER setMessage ]=======");
     };
 
 
@@ -81,6 +84,12 @@ function MessageListComponent({}) {
     //     console.log("messages", messages);
     // }
 
+    const handleKeyPress = (event) => {
+        if(event.key === 'Enter'){
+            onMessageSubmit();
+        }
+    }
+
     return (
         <div className="content">
             <div className="contact-profile margin-bottom10">
@@ -90,13 +99,13 @@ function MessageListComponent({}) {
                 </p>
             </div>
             <div className="messages">
-                {chat.map((m, ) => {
+                {chat.map((m) => {
                         return (
                             <ul >
                                 <li className="replies" >
                                     <img src="https://rozetked.me/images/uploads/dwoilp3BVjlE.jpg" alt="" />
                                     <p className="p">
-                                        {/*<span className="name-block">{m.name}:</span>*/}
+                                        <span className="name-block">{m.name}:</span>
                                         <span className="messages-span" > </span> {m.text}
                                     </p>
                                 </li>
@@ -115,6 +124,7 @@ function MessageListComponent({}) {
                         onChange={onTextChange}
                         maxLength="500"
                         value={message.text}
+                        onKeyPress={handleKeyPress}
                     />
 
                     <button onClick={onMessageSubmit}>
