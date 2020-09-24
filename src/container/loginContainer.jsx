@@ -9,9 +9,15 @@ export const LoginContainer = ({}) => {
     const dispatch = useDispatch()
 
     const responseGoogle = (response) => {
-        const { name } = response.profileObj;
+        const { email , googleId, name } = response.profileObj;
         console.log(response);
-        dispatch(signInGoogleRequest(name));
+
+        const user = {
+           email: email,
+           id: googleId,
+           name: name,
+        }
+        dispatch(signInGoogleRequest(user));
     }
 
 
