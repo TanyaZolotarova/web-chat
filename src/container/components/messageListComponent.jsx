@@ -1,10 +1,6 @@
-import React, {useEffect, useState} from "react";
-import connect from "react-redux/lib/connect/connect";
-import {useDispatch, useSelector} from "react-redux";
-
+import React, {useState} from "react";
 
 function MessageListComponent({activeChat, chat}) {
-
     const [message, setMessage] = useState('');
     // const dispatch = useDispatch()
     // const messages = useSelector((store) => store.messages)
@@ -42,21 +38,21 @@ function MessageListComponent({activeChat, chat}) {
                 </p>
             </div>
             <div className="messages">
-
                 {
                     chat.messages.map((m, ) => {
-
                         return (
                             <ul >
                                 <li className="replies" >
                                     <img src="https://rozetked.me/images/uploads/dwoilp3BVjlE.jpg" alt="" />
-                                    <p className="p"> <span className="name-block">{m.name}:</span><span className="messages-span" > </span> {m.message}
+                                    <p className="p">
+                                        <span className="name-block">{m.name}:</span>
+                                        <span className="messages-span" > </span> {m.message}
                                     </p>
                                 </li>
                             </ul>
                         );
-                    })}
-
+                    })
+                }
             </div>
             <div className="message-input">
                 <div className="wrap">
@@ -67,7 +63,6 @@ function MessageListComponent({activeChat, chat}) {
                         onChange={handleChange}
                         maxLength="500"
                         value={ message }
-
                     />
                     <button onClick={handleSubmit}>
                         <span className="material-icons pb-2 icon-size">send</span>

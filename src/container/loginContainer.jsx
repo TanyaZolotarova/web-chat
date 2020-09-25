@@ -1,15 +1,11 @@
-import React, { Component } from "react";
+import React from "react";
 import {useDispatch} from "react-redux";
 import {GoogleLogin} from 'react-google-login';
 import {signInGoogleRequest, signInRequest} from "../actions/userActions";
 import {useForm} from "react-hook-form";
 
-
-
 export const LoginContainer = ({}) => {
-
     const dispatch = useDispatch();
-
     const responseGoogle = (response) => {
         const {name} = response.profileObj;
         console.log(response);
@@ -17,7 +13,6 @@ export const LoginContainer = ({}) => {
     };
 
     const {register, handleSubmit, errors} = useForm();  // hook writing from form
-
 
 /*
 1. если пришел токено пользователе - положить в редакс и инфо
@@ -33,16 +28,13 @@ export const LoginContainer = ({}) => {
 - не правильный пароль (если пользователь уже есть в бд)
 - не прошли валидацию по полям
 - пользователь забанен (запрещен вход)
-
 */
     const sendData = (data) => {
         dispatch(signInRequest(data))
     };
 
-
     return (
         <div>
-            {/*<form className="form-staff" onSubmit={handleSubmit(onSubmit)}>*/}
             <form className="form-staff">
                 <div className="form-group">
                     <fieldset>
@@ -80,7 +72,6 @@ export const LoginContainer = ({}) => {
                 </div>
                 <button
                     type="submit"
-                    // onClick={handleSubmit(onSubmit)}
                     onClick={handleSubmit(sendData)}
                     disabled={errors.password || errors.email}
                     className="btn btn-primary width-100"
