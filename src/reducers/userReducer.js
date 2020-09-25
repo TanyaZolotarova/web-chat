@@ -22,5 +22,5 @@ const user = (state= {}, action) => {
 
 
 export const usersReducer = combineReducers({
-    user
+ user
 });

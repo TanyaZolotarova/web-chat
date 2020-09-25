@@ -5,7 +5,6 @@ import {signInGoogleRequest, signInRequest} from "../actions/userActions";
 import {useForm} from "react-hook-form";
 
 
-
 export const LoginContainer = ({}) => {
     const dispatch = useDispatch();
 
@@ -13,11 +12,16 @@ export const LoginContainer = ({}) => {
 
     const {register, handleSubmit, errors} = useForm(); // hook writing from form
 
+    const user = useSelector((state) => state.user.user);
 
     const responseGoogle = (response) => {
-        const {name} = response.profileObj;
-        dispatch(signInGoogleRequest(name));
-    };
+        dispatch(signInGoogleRequest(response.profileObj));
+    }
+
+    const responseGoogleFail = (response) => {
+        console.log('responseGoogleFail - ', response.profileObj)
+    }
+
 
     const sendData = (data) => {
         dispatch(signInRequest(data));
@@ -87,10 +91,10 @@ export const LoginContainer = ({}) => {
                 >Submit
                 </button>
                 <GoogleLogin
-                    clientId="216757630496-asjs0cafllgi8hr0bpgjk9e7jj0upkae.apps.googleusercontent.com"
+                    clientId="584019000189-2bikvl7c5s002gdl55eaepo88hdjq3bg.apps.googleusercontent.com"
                     buttonText="Залогиниться через Google"
                     onSuccess={responseGoogle}
-                    onFailure={responseGoogle}
+                    onFailure={responseGoogleFail}
                 />
             </form>
         </div>

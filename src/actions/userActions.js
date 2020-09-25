@@ -6,9 +6,9 @@ export const SIGN_IN_REQUEST_SUCCESS = '[login] user data from db after login su
 export const SIGN_IN_REQUEST_ERROR = '[login] user data from db after login error';
 
 
-export const signInGoogleRequest = (name) => ({
+export const signInGoogleRequest = (user) => ({
     type: SIGN_IN_GOOGLE_REQUEST,
-    name
+    user
 });
 
 
