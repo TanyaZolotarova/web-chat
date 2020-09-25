@@ -1,32 +1,39 @@
-import React, { Component } from "react";
-import {useDispatch} from "react-redux";
+import React from "react";
+import {useDispatch, useSelector} from "react-redux";
 import {GoogleLogin} from 'react-google-login';
 import {signInGoogleRequest, signInRequest} from "../actions/userActions";
 import {useForm} from "react-hook-form";
 
 
 
+
 export const LoginContainer = ({}) => {
 
     const dispatch = useDispatch();
+    const token = useSelector((store) => store.user.user.token);
+
+    const {register, handleSubmit, errors} = useForm(); // hook writing from form
 
     const responseGoogle = (response) => {
         const {name} = response.profileObj;
-        console.log(response);
         dispatch(signInGoogleRequest(name));
     };
 
-    const {register, handleSubmit, errors} = useForm();  // hook writing from form
+    const sendData = (data) => {
+        dispatch(signInRequest(data));
+
+        if (token) {
+            return [];
+        }
+    };
 
 
 /*
-1. если пришел токено пользователе - положить в редакс и инфо
-2. если положили в редакс токен и пользователя - сохранить в локал-стор и поднимать инфу из стора при загрузке страницы
 
 3. если получили токен - переходим на страницу чата
-
-4. (сначало обсудить!) если при загрузке страницы есть токен не разрешаем вернуться на страницу логина (заранее обсудить!)
-5. если сервер прислал ошибку, а не токен - показать инфу о том, что не можем зайти. без усложнения логики или интерфейса
+4. (сначала обсудить!) если при загрузке страницы есть токен, не разрешаем вернуться на страницу логина (заранее обсудить!)
+5. если сервер прислал ошибку, а не токен - показать инфу о том, что не можем зайти.
+без усложнения логики или интерфейса
 
 причины, по которым может сервер не пустить:Н
 - не контиролируемая ошибка (например, проблема подключения к бд)
@@ -35,10 +42,6 @@ export const LoginContainer = ({}) => {
 - пользователь забанен (запрещен вход)
 
 */
-    const sendData = (data) => {
-        dispatch(signInRequest(data))
-    };
-
 
     return (
         <div>
@@ -75,12 +78,11 @@ export const LoginContainer = ({}) => {
                                    required: "Enter password",
                                })}
                         />
-                        {errors.password && <p className="error error-staff">{errors.password.message}</p>}
+                        {errors.password && <p className="error error-staff"> {errors.password.message} </p>}
                     </fieldset>
                 </div>
                 <button
                     type="submit"
-                    // onClick={handleSubmit(onSubmit)}
                     onClick={handleSubmit(sendData)}
                     disabled={errors.password || errors.email}
                     className="btn btn-primary width-100"
