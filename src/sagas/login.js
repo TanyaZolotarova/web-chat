@@ -7,11 +7,12 @@ function* getCurrentUserGoogle(action) {
     try {
         const user = {
             user_name: action.name
-        } //запрос на сервер, в котором ты отправишь name get("/login", action.name)
+        }
+        //запрос на сервер, в котором ты отправишь name get("/login", action.name)
         console.log('user ', user)
         const response = yield call(login, action.name);
 
-        // const token = response.token \\ add to lockal storage
+        // const token = response.token // add to local storage
 
         yield put(signInGoogleSuccess(response))
     }
@@ -20,10 +21,8 @@ function* getCurrentUserGoogle(action) {
         console.log(error);
         yield put(signInGoogleError(error))
     }
-
-
 }
 
-export default function* actionLogin () {
+export default function * actionLogin () {
     yield takeLatest(SIGN_IN_GOOGLE_REQUEST, getCurrentUserGoogle)
 }

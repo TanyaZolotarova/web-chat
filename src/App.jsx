@@ -9,8 +9,8 @@ function App() {
       <Router>
           <div>
               <Switch>
-                  <Route exact={true} path='/login' component={LoginContainer}/>
-                  <Route exact={true} path='/' component={ChatContainer}/>
+                  <Route exact={true}  path='/login' component={LoginContainer}/>
+                  <Route exact={true}  path='/' component={ChatContainer}/>
               </Switch>
           </div>
       </Router>
