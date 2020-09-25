@@ -1,17 +1,22 @@
 import React from "react";
-import connect from "react-redux/lib/connect/connect";
 import { GoogleLogin } from 'react-google-login';
 import {useDispatch} from "react-redux";
 import {signInGoogleRequest} from "../actions/userActions";
 
-export const LoginContainer = ({}) => {
+import { useSelector } from 'react-redux';
 
-    const dispatch = useDispatch()
+
+export const LoginContainer = ({}) => {
+    const dispatch = useDispatch();
+
+    const user = useSelector((state) => state.user.user);
 
     const responseGoogle = (response) => {
-        const { name } = response.profileObj;
-        console.log(response);
-        dispatch(signInGoogleRequest(name));
+        dispatch(signInGoogleRequest(response.profileObj));
+    }
+
+    const responseGoogleFail = (response) => {
+        console.log('responseGoogleFail - ', response.profileObj)
     }
 
      return(
@@ -33,10 +38,10 @@ export const LoginContainer = ({}) => {
                   </div>
                   <button type="submit" className="btn btn-primary width-100">Submit</button>
                   <GoogleLogin
-                      clientId="216757630496-asjs0cafllgi8hr0bpgjk9e7jj0upkae.apps.googleusercontent.com"
+                      clientId="584019000189-2bikvl7c5s002gdl55eaepo88hdjq3bg.apps.googleusercontent.com"
                       buttonText="Залогиниться через Google"
                       onSuccess={responseGoogle}
-                      onFailure={responseGoogle}
+                      onFailure={responseGoogleFail}
                   />
 
               </form>
