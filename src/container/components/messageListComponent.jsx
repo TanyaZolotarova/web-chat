@@ -1,19 +1,26 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import connect from "react-redux/lib/connect/connect";
 import socket from "../../socket";
+import {CancelTokenStatic as props} from "axios";
 
 // socket connection with a server;
 socket.on('connect', () => {
 });
 
+
+
 function MessageListComponent({}) {
+
 
 
     const [message, setMessage] = useState({text: '', id: '', name: ''});
     const [chat, setChat] = useState([]);
+    const inputEl = useRef({text: '', id: '', name: ''});
 
     useEffect(() => {
-        socket.on('add_message', handleMessage);                   // on 'event' - listen  <== server
+        return () => {
+            // Очистить подписку
+        };// on 'event' - listen  <== server
     }, [chat])   // write here dependencies from handlers
 
     const handleMessage = (messData) => {
@@ -21,18 +28,18 @@ function MessageListComponent({}) {
         setChat([...chat, {...messData}])
         console.log("========[ AFTER setChat ]=======", chat);
     };
-
+    socket.on('add_message', handleMessage);
     const onTextChange = e => {
-        console.log('ON TEXT CHANGE',)
+        console.log('ON TEXT CHANGE',)                                      //1 переделать
         setMessage({...message, [e.target.name]: e.target.value});
         console.log('===[ message ]=====>', message);
     };
 
     const onMessageSubmit = () => {
-        const {name, id, text} = message
-        console.log('===[ onMessageSubmit ]=====>', message);
-        socket.emit('message', {name, id, text})                      // emit 'event' - send to  ==> server
-        setMessage({text: '', id: '', name})
+        const text = inputEl;                                               //2 переделать
+        console.log('===[ onMessageSubmit ]=====>', inputEl.current.text);
+        socket.emit('message', {text})                      // emit 'event' - send to  ==> server
+        // setMessage({text: '', id: '', name})
         console.log("========[ AFTER setMessage ]=======");
     };
 
@@ -100,18 +107,18 @@ function MessageListComponent({}) {
             </div>
             <div className="messages">
                 {chat.map((m) => {
-                        return (
-                            <ul >
-                                <li className="replies" >
-                                    <img src="https://rozetked.me/images/uploads/dwoilp3BVjlE.jpg" alt="" />
-                                    <p className="p">
-                                        <span className="name-block">{m.name}:</span>
-                                        <span className="messages-span" > </span> {m.text}
-                                    </p>
-                                </li>
-                            </ul>
-                        );
-                    })
+                    return (
+                        <ul >
+                            <li className="replies" >
+                                <img src="https://rozetked.me/images/uploads/dwoilp3BVjlE.jpg" alt="" />
+                                <p className="p">
+                                    <span className="name-block">{m.name}:</span>
+                                    <span className="messages-span" > </span> {m.text}
+                                </p>
+                            </li>
+                        </ul>
+                    );
+                })
                 }
             </div>
 
@@ -121,9 +128,10 @@ function MessageListComponent({}) {
                         type="text"
                         placeholder="Type message..."
                         name='text'
-                        onChange={onTextChange}
-                        maxLength="500"
-                        value={message.text}
+                        // onChange={onTextChange}
+                          maxLength="500"
+                        // value={message.text}
+                        ref={inputEl}
                         onKeyPress={handleKeyPress}
                     />
 
@@ -137,3 +145,4 @@ function MessageListComponent({}) {
 }
 
 export default MessageListComponent;
+
