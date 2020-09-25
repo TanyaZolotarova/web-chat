@@ -99,6 +99,15 @@
   bottom: 0;
 }
 
+.error-staff {
+  color: red;
+  margin-top: 2px;
+}
+
+.form-group{
+  margin-bottom: 0;
+}
+
 .space{
   margin-top: 10px;
 }
