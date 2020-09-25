@@ -3,25 +3,11 @@ import { SIGN_IN_GOOGLE_REQUEST, signInGoogleSuccess, signInGoogleError } from '
 import { login } from '../service/api.service';
 
 function* getCurrentUserGoogle(action) {
-    console.log('action ', action)
     try {
+        const response = yield call(login, action.user);
+        yield put(signInGoogleSuccess(response.data))
 
-        const user = {
-            email: action.user.email,
-            googleId: action.user.id,
-            name: action.user.name,
-        }
-
-        //add to response action.google.Id
-        console.log('user ', user)
-        const response = yield call(login, user);
-
-        // const token = response.token \\ add to lockal storage
-
-        yield put(signInGoogleSuccess(response))
-    }
-
-    catch (error) {
+    } catch (error) {
         console.log(error);
         yield put(signInGoogleError(error))
     }
