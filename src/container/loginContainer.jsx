@@ -6,13 +6,13 @@ import {useForm} from "react-hook-form";
 
 
 
-
 export const LoginContainer = ({}) => {
-
     const dispatch = useDispatch();
+
     const token = useSelector((store) => store.user.user.token);
 
     const {register, handleSubmit, errors} = useForm(); // hook writing from form
+
 
     const responseGoogle = (response) => {
         const {name} = response.profileObj;
@@ -40,12 +40,10 @@ export const LoginContainer = ({}) => {
 - не правильный пароль (если пользователь уже есть в бд)
 - не прошли валидацию по полям
 - пользователь забанен (запрещен вход)
-
 */
 
     return (
         <div>
-            {/*<form className="form-staff" onSubmit={handleSubmit(onSubmit)}>*/}
             <form className="form-staff">
                 <div className="form-group">
                     <fieldset>
