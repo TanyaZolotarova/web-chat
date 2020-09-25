@@ -1,36 +1,100 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import connect from "react-redux/lib/connect/connect";
-import {useDispatch, useSelector} from "react-redux";
+import socket from "../../socket";
+import {CancelTokenStatic as props} from "axios";
+
+// socket connection with a server;
+socket.on('connect', () => {
+});
 
 
-function MessageListComponent({activeChat, chat}) {
 
-    const [message, setMessage] = useState('');
-    // const dispatch = useDispatch()
-    // const messages = useSelector((store) => store.messages)
-    const messages = [{message: 'Hello', id: 1, name: 'Anna'} , {message: 'Hi!', id: 2, name: "Andre"}];
+function MessageListComponent({}) {
 
-    const handleChange = (event) => {
-        const {target} = event;
-        setMessage( target.value
-        )
-        console.log("message", message)
-    }
 
-    const handleSubmit = () => {
-        const newMessage = messages.push({
-            message: message,
-            id: 1,
-            name: 'Garry'
-            //match.params.user.name
-            //match.params.user.id
-        })
 
-        setMessage('')
+    const [message, setMessage] = useState({text: '', id: '', name: ''});
+    const [chat, setChat] = useState([]);
+    const inputEl = useRef({text: '', id: '', name: ''});
 
-        console.log("newMessage", newMessage)
-        console.log("messages", messages)
+    useEffect(() => {
+        return () => {
+            // Очистить подписку
+        };// on 'event' - listen  <== server
+    }, [chat])   // write here dependencies from handlers
 
+    const handleMessage = (messData) => {
+        console.log('===[ messData ]=====>', messData);
+        setChat([...chat, {...messData}])
+        console.log("========[ AFTER setChat ]=======", chat);
+    };
+    socket.on('add_message', handleMessage);
+    const onTextChange = e => {
+        console.log('ON TEXT CHANGE',)                                      //1 переделать
+        setMessage({...message, [e.target.name]: e.target.value});
+        console.log('===[ message ]=====>', message);
+    };
+
+    const onMessageSubmit = () => {
+        const text = inputEl;                                               //2 переделать
+        console.log('===[ onMessageSubmit ]=====>', inputEl.current.text);
+        socket.emit('message', {text})                      // emit 'event' - send to  ==> server
+        // setMessage({text: '', id: '', name})
+        console.log("========[ AFTER setMessage ]=======");
+    };
+
+
+
+    // const renderChat = () => {
+    //     if (!chat.length) {
+    //         return null;
+    //     }
+    //     return chat.map(({name, text}, index) => (
+    //         <div key={index}>
+    //             {/*<h3>*/}
+    //             {/*    {name}: <span>{message}</span>*/}
+    //             {/*</h3>*/}
+    //
+    //             <ul>
+    //                 <li className="replies">
+    //                     <img src="https://rozetked.me/images/uploads/dwoilp3BVjlE.jpg" alt=""/>
+    //                     <p className="p"><span className="name-block">{index.name}:</span>
+    //                         <span className="messages-span"> </span> {index.text}
+    //                     </p>
+    //                 </li>
+    //             </ul>
+    //
+    //         </div>
+    //     ))
+    // };
+
+
+    // const [message, setMessage] = useState('');
+    // const messages = [{message: 'Hello', id: 1, name: 'Anna'} , {message: 'Hi!', id: 2, name: "Andre"}];
+
+    // const handleChange = (event) => {
+    //     const {target} = event;
+    //     setMessage( target.value
+    //     )
+    //     console.log("[=== message =====>]", message);
+    // }
+    // const handleSubmit = () => {
+    //     const newMessage = messages.push({
+    //         message: message,
+    //         id: 1,
+    //         name: 'Garry'
+    //         //match.params.user.name
+    //         //match.params.user.id
+    //     })
+    //     setMessage('')
+    //     console.log("newMessage", newMessage);
+    //     console.log("messages", messages);
+    // }
+
+    const handleKeyPress = (event) => {
+        if(event.key === 'Enter'){
+            onMessageSubmit();
+        }
     }
 
     return (
@@ -42,48 +106,43 @@ function MessageListComponent({activeChat, chat}) {
                 </p>
             </div>
             <div className="messages">
-
-                {
-                    chat.messages.map((m, ) => {
-
-                        return (
-                            <ul >
-                                <li className="replies" >
-                                    <img src="https://rozetked.me/images/uploads/dwoilp3BVjlE.jpg" alt="" />
-                                    <p className="p"> <span className="name-block">{m.name}:</span><span className="messages-span" > </span> {m.message}
-                                    </p>
-                                </li>
-                            </ul>
-                        );
-                    })}
-
+                {chat.map((m) => {
+                    return (
+                        <ul >
+                            <li className="replies" >
+                                <img src="https://rozetked.me/images/uploads/dwoilp3BVjlE.jpg" alt="" />
+                                <p className="p">
+                                    <span className="name-block">{m.name}:</span>
+                                    <span className="messages-span" > </span> {m.text}
+                                </p>
+                            </li>
+                        </ul>
+                    );
+                })
+                }
             </div>
+
             <div className="message-input">
                 <div className="wrap">
                     <input
                         type="text"
-                        placeholder="Напишите сообщение..."
-                        name='message'
-                        onChange={handleChange}
-                        maxLength="500"
-                        value={ message }
-
+                        placeholder="Type message..."
+                        name='text'
+                        // onChange={onTextChange}
+                          maxLength="500"
+                        // value={message.text}
+                        ref={inputEl}
+                        onKeyPress={handleKeyPress}
                     />
-                    <button onClick={handleSubmit}>
+
+                    <button onClick={onMessageSubmit}>
                         <span className="material-icons pb-2 icon-size">send</span>
                     </button>
                 </div>
             </div>
         </div>
     )
-
 }
 
-const mapStateToProps = (state) => {
-    return {
-        // chats: chatsSelector(state),
-    };
-};
-
-// export default connect(mapStateToProps, {  })(MessageListComponent);
 export default MessageListComponent;
+
