@@ -4,10 +4,12 @@ import {
 } from "../actions/userActions";
 
 
+
 const user = (state= {}, action) => {
     switch (action.type) {
         case SIGN_IN_GOOGLE_SUCCESS:
-            return action.user;
+            return  action.user;
+
         default:
             return state;
     }
@@ -15,5 +17,5 @@ const user = (state= {}, action) => {
 
 
 export const usersReducer = combineReducers({
-    user
+ user
 });
