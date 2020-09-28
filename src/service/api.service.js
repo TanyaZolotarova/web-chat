@@ -2,6 +2,7 @@ import axios from 'axios';
 
 
 export const loginDb = (userData) => {
+    console.log(userData);
     return axios.post( 'http://localhost:8000/auth', userData);
 }
 
