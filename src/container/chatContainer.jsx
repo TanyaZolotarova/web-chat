@@ -42,7 +42,7 @@ const ChatContainer = ({  }) => {
         //
         // socket.on('message', (data) => {
         //     console.log('MESSAGE', data);
-        //     socket.emit('message', {'FFFFFFFF': 'UUUUUUUUUUUUUUCK'});
+        //     socket.emit('message', {'FFFFFFFF': 'UUUUUUUUUUUUUU'});
         // });
     }, []);
 

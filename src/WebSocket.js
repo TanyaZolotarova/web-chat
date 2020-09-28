@@ -1,18 +1,22 @@
 import io from "socket.io-client";
-import React, {createContext, useRef} from "react";
+import React, {createContext, useRef, useState} from "react";
 
 export const WebSocketContext = createContext(null)
+// let connection = null;
 
 export default ({ children }) => {
-    const socketRef = useRef()
+    const [connection, setConnection] = useState(null);
+
     const connect = () => {
         const token = window.localStorage.getItem('token');
         const SOCKET_IO_URL = `http://localhost:8000/?token=${token}`;
-        socketRef.current = io(SOCKET_IO_URL);
+        const socket = io(SOCKET_IO_URL);
+        // console.log('Provider socket - ', socket);
+        setConnection(socket);
     };
 
     return (
-        <WebSocketContext.Provider value={{socket: socketRef.current, connect}}>
+        <WebSocketContext.Provider value={{socket: connection, connect}}>
             {children}
         </WebSocketContext.Provider>
     );
