@@ -4,13 +4,15 @@ import {
     SIGN_IN_REQUEST_SUCCESS
 } from "../actions/userActions";
 
-const user = (state= {}, action) => {
+
+const user = (state = {}, action) => {
     switch (action.type) {
         case SIGN_IN_GOOGLE_SUCCESS:
 
             window.localStorage.setItem('token', action.user.token);
             window.localStorage.setItem('user', JSON.stringify(action.user.user));
             window.localStorage.setItem('name', JSON.stringify(action.user.user.name));
+            window.localStorage.setItem('isGoogle', true);
 
             return action.user;
 
@@ -18,6 +20,7 @@ const user = (state= {}, action) => {
 
             localStorage.setItem('token', action.data.data.token);
             localStorage.setItem('user', JSON.stringify(action.data.data.user));
+
             return action.data.data;
 
         default:
@@ -27,5 +30,5 @@ const user = (state= {}, action) => {
 
 
 export const usersReducer = combineReducers({
- user
+    user
 });
