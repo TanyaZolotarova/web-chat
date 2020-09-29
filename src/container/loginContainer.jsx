@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {GoogleLogin} from 'react-google-login';
 import {signInGoogleRequest, signInRequest} from "../actions/userActions";
@@ -10,14 +10,14 @@ import {useHistory} from 'react-router-dom';
 export const LoginContainer = ({}) => {
     const dispatch = useDispatch();
     const history = useHistory();
-    // const token = useSelector((store) => store.user.user.token);
-    const token = localStorage.getItem('token');
-    const {register, handleSubmit, errors} = useForm(); // hook writing from form
 
-    // const user = useSelector((state) => state.user.user);
+    const token = useSelector((store) => store.user.user.token);
+
+    const {register, handleSubmit, errors} = useForm(); // hook writing from form
 
     const responseGoogle = (response) => {
         dispatch(signInGoogleRequest(response.profileObj));
+
     }
 
     const responseGoogleFail = (response) => {
@@ -26,28 +26,14 @@ export const LoginContainer = ({}) => {
 
     const sendData = (data) => {
         dispatch(signInRequest(data));
-
     };
 
     useEffect(() => {
+
         if(token){
             history.push('/chat');
         }
     },[token]);
-
-    /*
-
-    3. если получили токен - переходим на страницу чата
-    4. (сначала обсудить!) если при загрузке страницы есть токен, не разрешаем вернуться на страницу логина (заранее обсудить!)
-    5. если сервер прислал ошибку, а не токен - показать инфу о том, что не можем зайти.
-    без усложнения логики или интерфейса
-
-    причины, по которым может сервер не пустить:Н
-    - не контиролируемая ошибка (например, проблема подключения к бд)
-    - не правильный пароль (если пользователь уже есть в бд)
-    - не прошли валидацию по полям
-    - пользователь забанен (запрещен вход)
-    */
 
     return (
         <div>
