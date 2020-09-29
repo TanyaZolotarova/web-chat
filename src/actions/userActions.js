@@ -5,6 +5,9 @@ export const SIGN_IN_REQUEST = '[login] user data from db after login';
 export const SIGN_IN_REQUEST_SUCCESS = '[login] user data from db after login success';
 export const SIGN_IN_REQUEST_ERROR = '[login] user data from db after login error';
 
+export const UPDATE_USER_REQUEST = '[update] update user data request';
+export const UPDATE_USER_SUCCESS = '[update] update user data success';
+export const UPDATE_USER_ERROR = '[update] update user data error';
 
 export const signInGoogleRequest = (user) => ({
     type: SIGN_IN_GOOGLE_REQUEST,
@@ -37,3 +40,18 @@ export const signInRequestError = (error) => ({
     error
 });
 
+export const updateProfileUserRequest = (data) => ({
+    type: UPDATE_USER_REQUEST,
+    data
+});
+
+
+export const updateProfileUserSuccess = (data) => ({
+    type: UPDATE_USER_SUCCESS,
+    data
+});
+
+export const updateProfileUserError = (error) => ({
+    type: UPDATE_USER_ERROR,
+    error
+});

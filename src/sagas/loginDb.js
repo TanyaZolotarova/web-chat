@@ -13,6 +13,7 @@ function* getCurrentUser (action) {
             email: action.data.email,
             password: action.data.password,
         }
+        console.log(action)
         const response = yield call(loginDb, action.data);
 
         yield put(signInRequestSuccess(response))
