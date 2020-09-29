@@ -16,10 +16,8 @@ const user = (state= {}, action) => {
 
         case  SIGN_IN_REQUEST_SUCCESS:
 
-            window.localStorage.setItem('token', action.data.data.token);
-            window.localStorage.setItem('user', JSON.stringify(action.data.data.user));
-            window.localStorage.setItem('name', JSON.stringify(action.data.data.user.name));
-
+            localStorage.setItem('token', action.data.data.token);
+            localStorage.setItem('user', JSON.stringify(action.data.data.user));
             return action.data.data;
 
         default:
