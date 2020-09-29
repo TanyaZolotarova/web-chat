@@ -7,18 +7,13 @@ import {
 import {login, loginDb} from '../service/api.service';
 
 function* getCurrentUser (action) {
-    // console.log('action ', action.data);
-    // console.log('action ', action.data.email);
-    // console.log('action ', action.data.password);
 
     try {
         const user = {
             email: action.data.email,
             password: action.data.password,
         }
-
         const response = yield call(loginDb, action.data);
-
 
         yield put(signInRequestSuccess(response))
 
