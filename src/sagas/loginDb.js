@@ -1,4 +1,4 @@
-import {call, delay, put, takeLatest} from 'redux-saga/effects';
+import { call, delay, put, takeLatest } from 'redux-saga/effects';
 import {
     SIGN_IN_REQUEST,
     signInRequestSuccess,
@@ -9,10 +9,10 @@ import {login, loginDb} from '../service/api.service';
 function* getCurrentUser(action) {
 
     try {
-        // const user = {
-        //     email: action.data.email,
-        //     password: action.data.password,
-        // }
+        const user = {
+            email: action.data.email,
+            password: action.data.password,
+        }
 
         const response = yield call(loginDb, action.data);
 
