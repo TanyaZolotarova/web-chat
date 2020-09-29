@@ -5,15 +5,20 @@ import {WebSocketContext} from "../WebSocket";
 import {GearIcon} from '@primer/octicons-react';
 import {useForm} from "react-hook-form";
 import {updateProfileUserRequest} from "../actions/userActions";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {userSelector} from '../selectors/userSelector'
 
 
 const ChatContainer = ({}) => {
     const dispatch = useDispatch();
     const {register, handleSubmit} = useForm(); // hook writing from form
+    const {connect} = useContext(WebSocketContext);
 
+    const [user, setUser] = useState({
+        name: '',
+        email: ''
+    });
     const [chats, setChats] = useState([]);
-    const user = JSON.parse(localStorage.getItem('user')) || '';
     const [users, setUsers] = useState([]);
     const [error, setError] = useState({});
     const [chat, setChat] = useState([]);
@@ -31,16 +36,20 @@ const ChatContainer = ({}) => {
 
 
     const sendData = (data) => {
-        socket.emit('editUser', {name: userName});
+     //   socket.emit('editUser', {name: userName});
         dispatch(updateProfileUserRequest({...data, userId: user.id}));
     };
 
-    const {connect} = useContext(WebSocketContext);
 
     useEffect(() => {
         const socket = connect();
 
+        socket.on('connected', (user) => {
+            setUser(user);
+        });
+
         socket.on('chatsList', (chatslist) => {
+            console.log(chatslist);
             setChats(chatslist);
         });
     }, []);
@@ -59,7 +68,7 @@ const ChatContainer = ({}) => {
                                      data-toggle="collapse"
                                      data-target="#multiCollapseExample1"
                                      aria-controls="multiCollapseExample1"/>
-                                <p> {userName} </p>
+                                <p> {user.name} </p>
                                 <i className="fa fa-chevron-down expand-button" aria-hidden="true"/>
                                 <div id="status-options">
                                     <ul>
@@ -98,8 +107,8 @@ const ChatContainer = ({}) => {
                                                             <input type="text"
                                                                    className="form-control"
                                                                    name="name"
-                                                                   value={userName}
-                                                                   onChange={(e)=> setName(e.target.value)}
+                                                                   value={user.name}
+                                                                   onChange={(e)=> setUser({...user, name: e.target.value})}
                                                                    ref={register()}
                                                                    id="formGroupExampleInput1"
                                                                    placeholder="name"/>
@@ -112,7 +121,7 @@ const ChatContainer = ({}) => {
                                                                    name="email"
                                                                    className="form-control"
                                                                    id="formGroupExampleInput"
-                                                                   value={userEmail}
+                                                                   value={user.email}
                                                                     onChange={(e)=> setEmail(e.target.value)}
                                                                    ref={register({
                                                                        pattern: {
@@ -165,13 +174,13 @@ const ChatContainer = ({}) => {
                                        className="form-control"
                                        aria-label="Имя пользователя"
                                        aria-describedby="basic-addon1"
-                                       value={userEmail}
+                                       value={user.email}
                                 />
                                 <input type="text"
                                        className="form-control space"
                                        aria-label="Имя пользователя"
                                        aria-describedby="basic-addon1"
-                                       value={userName}
+                                       value={user.name}
                                     //on change handle change \\ on enter put edit in DB
                                 />
                             </div>
@@ -186,7 +195,9 @@ const ChatContainer = ({}) => {
                             {
                                 chats.map((chat) => {
                                     return(
-                                        <li className = {
+                                        <li
+                                            key={chat.id}
+                                            className = {
                                             chat.id === activeChatID
                                                 ? 'contact active'
                                                 : "contact"}

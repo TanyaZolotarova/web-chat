@@ -10,8 +10,8 @@ import {useHistory} from 'react-router-dom';
 export const LoginContainer = ({}) => {
     const dispatch = useDispatch();
     const history = useHistory();
-    // const token = useSelector((store) => store.user.user.token);
-    const token = localStorage.getItem('token');
+     const token = useSelector((store) => store.user.user.token);
+    //const token = localStorage.getItem('token');
     const {register, handleSubmit, errors} = useForm(); // hook writing from form
 
     // const user = useSelector((state) => state.user.user);

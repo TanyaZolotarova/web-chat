@@ -16,7 +16,7 @@ function* getCurrentUser(action) {
         const response = yield call(loginDb, action.data);
 
         yield put(signInRequestSuccess(response));
-
+        localStorage.setItem('token', response.data.token);
     } catch (error) {
         yield put(signInRequestError(error));
     }

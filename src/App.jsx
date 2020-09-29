@@ -19,7 +19,7 @@ function App() {
 
                     <Route exact={true} path='/login' component={LoginContainer}/>
 
-                    <ProtectedRoute path='/chat' component={ChatContainer} />
+                    <Route path='/chat' component={ChatContainer} />
 
                 </Switch>
             </div>

@@ -12,7 +12,6 @@ export const login = (user) => {
 }
 
 export const updateProfile = (data) => {
-
     console.log(data)
-      return axios.put(`http://localhost:8000/user/profile/${data.userId}`, {data});
+      return axios.put(`http://localhost:8000/user/profile/${data.userId}`, data);
 }
