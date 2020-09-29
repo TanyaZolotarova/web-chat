@@ -8,7 +8,7 @@ import {
 const user = (state = {}, action) => {
     switch (action.type) {
         case SIGN_IN_GOOGLE_SUCCESS:
-
+            console.log(action.user)
             window.localStorage.setItem('token', action.user.token);
             window.localStorage.setItem('user', JSON.stringify(action.user.user));
             window.localStorage.setItem('name', JSON.stringify(action.user.user.name));
@@ -20,6 +20,7 @@ const user = (state = {}, action) => {
 
             localStorage.setItem('token', action.data.data.token);
             localStorage.setItem('user', JSON.stringify(action.data.data.user));
+
 
             return action.data.data;
 
