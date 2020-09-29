@@ -13,6 +13,7 @@ export default ({ children }) => {
         const socket = io(SOCKET_IO_URL);
         // console.log('Provider socket - ', socket);
         setConnection(socket);
+        return socket;
     };
 
     return (

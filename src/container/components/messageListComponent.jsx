@@ -5,26 +5,32 @@ import {WebSocketContext} from "../../WebSocket";
 // import {useDispatch, useSelector} from "react-redux";
 // import {CancelTokenStatic as props} from "axios";
 
-function MessageListComponent({}) {
-
-    const [message, setMessage] = useState('');
-    const [chat, setChat] = useState([]);
+function MessageListComponent({chat}) {
+    const [currentMessage, setCurrentMessage] = useState('');
+    const [messages, setMessages] = useState([]); // chatId, email, name, text
     const {socket, connect} = useContext(WebSocketContext);
-    const userName = JSON.parse(localStorage.getItem("name"));
 
+// console.log("chat", chat);
 
     const onMessageSubmit = () => {
-        socket.emit('message', {text: message, chatId: '1'});
+        socket.emit('message', {text: currentMessage, chatId: chat.id}); // fixme chatId
         //mb emit userId: ''
         //get chat.id from socket
-        setChat([...chat, message]);
+        setCurrentMessage('');
     };
 
     const handleKeyPress = (event) => {
         if(event.key === 'Enter'){
             onMessageSubmit();
+            setCurrentMessage('');
         }
     }
+
+    useEffect(() => {
+        socket.on('message', (message) => {
+            setMessages((oldChat) => [...oldChat, message]);
+        });
+    }, []);
 
     return (
         <div className="content">
@@ -35,14 +41,14 @@ function MessageListComponent({}) {
                 </p>
             </div>
             <div className="messages">
-                { chat.map((m) => {
+                { messages.map((m) => {
                     return (
                         <ul >
                             <li className="replies" >
                                 <img src="https://rozetked.me/images/uploads/dwoilp3BVjlE.jpg" alt="" />
                                 <p className="p">
-                                    <span className="name-block">{userName}:</span>
-                                    <span className="messages-span" > </span> {m}
+                                    <span className="name-block">{m.name}:</span>
+                                    <span className="messages-span" > </span> {m.text}
                                 </p>
                             </li>
                         </ul>
@@ -57,8 +63,9 @@ function MessageListComponent({}) {
                         type="text"
                         placeholder="Type message..."
                         name='text'
-                          maxLength="500"
-                        onChange={(e) => setMessage(e.target.value)}
+                        maxLength="500"
+                        value={currentMessage}
+                        onChange={(e) => setCurrentMessage(e.target.value)}
                         onKeyPress={handleKeyPress}
                     />
 
