@@ -13,7 +13,8 @@ export const LoginContainer = ({}) => {
     // const token = useSelector((store) => store.user.user.token);
     const token = localStorage.getItem('token');
     const {register, handleSubmit, errors} = useForm(); // hook writing from form
-    const user = useSelector((state) => state.user.user);
+
+    // const user = useSelector((state) => state.user.user);
 
     const responseGoogle = (response) => {
         dispatch(signInGoogleRequest(response.profileObj));
