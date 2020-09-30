@@ -8,14 +8,12 @@ import {WebSocketContext} from "../../WebSocket";
 function MessageListComponent({chat}) {
     const [currentMessage, setCurrentMessage] = useState('');
     const [messages, setMessages] = useState([]); // chatId, email, name, text
-    const {socket, connect} = useContext(WebSocketContext);
+    const {socket} = useContext(WebSocketContext);
 //
 // console.log("chat", chat);
 
     const onMessageSubmit = () => {
-        socket.emit('message', {text: currentMessage, chatId: chat.id}); // fixme chatId
-        //mb emit userId: ''
-        //get chat.id from socket
+        socket.emit('message', {message: currentMessage, chatId: chat.id});
         setCurrentMessage('');
     };
 
@@ -28,9 +26,19 @@ function MessageListComponent({chat}) {
 
     useEffect(() => {
         socket.on('message', (message) => {
+
+           // if(chat.id === message.chatId) {
             setMessages((oldChat) => [...oldChat, message]);
         });
+
+        socket.emit('getChatHistory', {chatId: chat.id});
+
+        socket.on('chatHistory', (messages) => {
+            setMessages(messages);
+
+        });
     }, []);
+
 
     return (
         <div className="content">
@@ -42,17 +50,17 @@ function MessageListComponent({chat}) {
             </div>
             <div className="messages">
                 { messages.map((m) => {
-                    return (
-                        <ul >
+                    return chat.id === m.chatId ? ( /* todo remove */
+                    <ul >
                             <li className="replies" >
                                 <img src="https://rozetked.me/images/uploads/dwoilp3BVjlE.jpg" alt="" />
                                 <p className="p">
-                                    <span className="name-block">{m.name}:</span>
-                                    <span className="messages-span" > </span> {m.text}
+                                    <span className="name-block">{m.name}: </span>
+                                    <span className="messages-span" > </span> {m.message}
                                 </p>
                             </li>
                         </ul>
-                    );
+                    ) : null;
                 })
                 }
             </div>

@@ -1,5 +1,5 @@
 import {combineReducers} from "redux";
-import {usersReducer} from "./userReducer";
+import {user} from "./userReducer";
 import {chatReducer} from "./chatReducer";
 
 

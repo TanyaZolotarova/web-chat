@@ -4,45 +4,43 @@ import {
     SIGN_IN_REQUEST_SUCCESS, UPDATE_USER_SUCCESS
 } from "../actions/userActions";
 
-const initialState = {
-    user: {},
-    token: ''
-}
+// const initialState = {
+//     user: {},
+//     token: ''
+// }
 
-const user = (state = initialState, action) => {
+export const user = (state= null , action) => {
     switch (action.type) {
         case SIGN_IN_GOOGLE_SUCCESS:
             return {
                 ...state,
-                user: action.user,
+                ...action.user,
                 token: action.user.token,
             }
-            console.log(action.user)
+            // console.log(action.user)
             // window.localStorage.setItem('token', action.user.token);
             // window.localStorage.setItem('user', JSON.stringify(action.user.user));
             // window.localStorage.setItem('name', JSON.stringify(action.user.user.name));
             // window.localStorage.setItem('isGoogle', true);
 
-            return action.user;
+           // return action.user;
 
         case  SIGN_IN_REQUEST_SUCCESS:
+            console.log('SIGN_IN_REQUEST_SUCCESS',action)
             return {
                 ...state,
-                user: action.data.data.user,
-                token: action.data.data.token,
+                ...action.data.user,
+                token: action.data.token,
             }
-            // localStorage.setItem('token', action.data.data.token);
-            // localStorage.setItem('user', JSON.stringify(action.data.data.user));
+        // localStorage.setItem('token', action.data.data.token);
+        // localStorage.setItem('user', JSON.stringify(action.data.data.user));
 
 
-            // return action.data.data;
+        // return action.data.data;
         case UPDATE_USER_SUCCESS:
             return {
                 ...state,
-                user: {
-                    ...state.user,
-                    ...action.data,
-                },
+                ...action.data,
             }
         default:
             return {
@@ -52,6 +50,7 @@ const user = (state = initialState, action) => {
 };
 
 
-export const usersReducer = combineReducers({
-    user
-});
+
+// export const usersReducer = combineReducers({
+//     user
+// });
