@@ -9,7 +9,7 @@ export const LoginContainer = ({}) => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const token = useSelector((store) => store.user.user.token);
+     const token = useSelector((store) => store.user.token);
 
     const {register, handleSubmit, errors} = useForm(); // hook writing from form
 
