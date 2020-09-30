@@ -4,10 +4,10 @@ import {
     SIGN_IN_REQUEST_SUCCESS, UPDATE_USER_SUCCESS
 } from "../actions/userActions";
 
-// const initialState = {
-//     user: {},
-//     token: ''
-// }
+const initialState = {
+    user: {},
+    token: ''
+}
 
 export const user = (state= null , action) => {
     switch (action.type) {
@@ -51,6 +51,6 @@ export const user = (state= null , action) => {
 
 
 
-// export const usersReducer = combineReducers({
-//     user
-// });
+export const usersReducer = combineReducers({
+    user
+});
