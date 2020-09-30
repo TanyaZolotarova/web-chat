@@ -17,7 +17,7 @@ function App() {
             <div>
                 <Switch>
 
-                    <Route exact={true} path='/login' component={LoginContainer}/>
+                    <Route exact={true} path='/' component={LoginContainer}/>
 
                     <Route path='/chat' component={ChatContainer} />
 
