@@ -14,7 +14,7 @@ export const user = (state= null , action) => {
         case SIGN_IN_GOOGLE_SUCCESS:
             return {
                 ...state,
-                ...action.user,
+                ...action.user.user,
                 token: action.user.token,
             }
             // console.log(action.user)
