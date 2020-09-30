@@ -54,10 +54,15 @@ const ChatContainer = ({}) => {
         });
 
         socket.on('chatsList', (chatslist) => {
-            console.log(chatslist);
+            // console.log(chatslist);
             setChats(chatslist);
         });
-    }, [userSelector, readOnly]);
+
+        socket.on('warning', (data) => {
+            alert(data.message); // todo
+        });
+
+    }, []);
 
     return (
         <div className="body">
