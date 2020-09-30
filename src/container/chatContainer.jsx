@@ -1,15 +1,14 @@
 import React, {useContext, useEffect, useState} from "react";
 import MessageListComponent from "./components/messageListComponent";
-// import Gravatar from 'react-gravatar';
 import {WebSocketContext} from "../WebSocket";
 import {GearIcon} from '@primer/octicons-react';
 import {useForm} from "react-hook-form";
 import {updateProfileUserRequest} from "../actions/userActions";
 import {useDispatch, useSelector} from "react-redux";
-import {userSelector} from '../selectors/userSelector'
 
 
 const ChatContainer = ({}) => {
+
     const dispatch = useDispatch();
     const {register, handleSubmit, errors } = useForm(); // hook writing from form
     const {socket,connect} = useContext(WebSocketContext);
@@ -66,6 +65,7 @@ const ChatContainer = ({}) => {
                 <div id="sidepanel">
                     <div id="profile">
                         <div className="user-profile">
+
                             <div className="wrap">
                                 <img id="profile-img"
                                      src="https://primamedia.gcdn.co/f/main/1937/1936556.jpg?ca2c24aa472396beadfd4a5eb8bf8a22"
@@ -77,10 +77,12 @@ const ChatContainer = ({}) => {
                                 <p> {user.name} </p>
                                 <i className="fa fa-chevron-down expand-button" aria-hidden="true"/>
                                 <div id="status-options">
+
                                     <ul>
                                         <li id="status-online" className="active"><span className="status-circle"/>
                                             <p>Online</p></li>
                                         <li id="status-offline"><span className="status-circle"/> <p>Offline</p></li>
+
                                     </ul>
                                 </div>
                             </div>
@@ -114,7 +116,10 @@ const ChatContainer = ({}) => {
                                                                    className="form-control"
                                                                    name="name"
                                                                    value={user.name}
-                                                                   onChange={(e)=> setUser({...user, name: e.target.value})}
+                                                                   onChange={(e) => setUser({
+                                                                       ...user,
+                                                                       name: e.target.value
+                                                                   })}
                                                                    ref={register()}
                                                                    id="formGroupExampleInput1"
                                                                    placeholder="name"/>
@@ -148,9 +153,9 @@ const ChatContainer = ({}) => {
                                                             <input type="password"
                                                                    name="password"
                                                                    className="form-control"
-                                                                    onChange={(e)=> setPassword(e.target.value)}
+                                                                   onChange={(e) => setPassword(e.target.value)}
                                                                    ref={register()}
-                                                                   // onChange={}
+                                                                // onChange={}
                                                                    id="formGroupExampleInput2"
                                                                    readOnly={readOnly}
                                                             />
@@ -161,12 +166,17 @@ const ChatContainer = ({}) => {
 
                                             </div>
                                             <div className="modal-footer">
-                                                <button type="button" className="btn btn-secondary"
-                                                        data-dismiss="modal">Close
+                                                <button type="button"
+                                                        className="btn btn-secondary"
+                                                        data-dismiss="modal"
+                                                >Close
                                                 </button>
-                                                <button type="button" className="btn btn-primary" data-dismiss="modal"
-                                                        onClick={handleSubmit(sendData)}>
-                                                    Edit
+
+                                                <button type="button"
+                                                        className="btn btn-primary"
+                                                        data-dismiss="modal"
+                                                        onClick={handleSubmit(sendData)}
+                                                >Edit
                                                 </button>
                                             </div>
                                         </div>
@@ -188,26 +198,39 @@ const ChatContainer = ({}) => {
                                        aria-label="Имя пользователя"
                                        aria-describedby="basic-addon1"
                                        value={user.name}
-                                    //on change handle change \\ on enter put edit in DB
                                 />
+                                <button
+                                    className='mt-2 btn btn-sm btn-info'
+                                    onClick={() => {
+                                    window.localStorage.clear()
+                                    }}>
+                                    Logout
+                                </button>
+
                             </div>
                         </div>
                     </div>
                     <div id="search">
-                        <label htmlFor=""><i className="fa fa-search" aria-hidden="true"/></label>
-                        <input type="text" placeholder="Поиск"/>
+                        <label htmlFor="">
+                            <i className="fa fa-search"
+                               aria-hidden="true"
+                            />
+                        </label>
+                        <input type="text"
+                               placeholder="Поиск"
+                        />
                     </div>
                     <div id="contacts">
                         <ul>
                             {
                                 chats.map((chat) => {
-                                    return(
+                                    return (
                                         <li
                                             key={chat.id}
-                                            className = {
-                                            chat.id === activeChatID
-                                                ? 'contact active'
-                                                : "contact"}
+                                            className={
+                                                chat.id === activeChatID
+                                                    ? 'contact active'
+                                                    : "contact"}
                                             onClick={() => {
                                                 setActiveChatID(chat.id)
                                             }
@@ -224,12 +247,9 @@ const ChatContainer = ({}) => {
                                                         {chat.is_group_chat ?
                                                             chat.chat_name :
                                                             chat.creator_id
-                                                            //name
+
                                                         }</p>
-                                                    <p className="preview"> //some text. Fhow it gets </p>
                                                 </div>
-
-
                                             </div>
                                         </li>
                                     )
@@ -242,6 +262,34 @@ const ChatContainer = ({}) => {
                             <span> Создать чат </span>
                         </button>
                     </div>
+                    <div className="modal fade" id="createChatModal" tabIndex="-1" role="dialog"
+                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div className="modal-dialog">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5 className="modal-title" id="exampleModalLabel">Modal title</h5>
+                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                    </button>
+                                </div>
+                                <div className="modal-body">
+                                    <div className="input-group mb-3">
+                                        <input type="text" className="form-control" placeholder="Название чата"
+                                               aria-label="Имя пользователя" aria-describedby="basic-addon1"/>
+                                    </div>
+                                    <div className="input-group mb-3">
+                                        <input type="text" className="form-control" placeholder="Участники:"
+                                               aria-label="Имя пользователя" aria-describedby="basic-addon1"/>
+                                    </div>
+                                </div>
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Close
+                                    </button>
+                                    <button type="button" className="btn btn-primary">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 {activeChatID &&
                 <MessageListComponent
@@ -253,22 +301,3 @@ const ChatContainer = ({}) => {
 }
 
 export default ChatContainer;
-
-// export default connect(mapStateToProps, {  })(ChatContainer);
-// const getChatData = () => {
-//     return JSON.parse(localStorage.getItem("chatData"));
-// };
-// useEffect(() => {
-//     fetch("http://192.168.0.109:8000/users")
-//         .then(res => res.json())
-//         .then(
-//             (result) => {
-//                 setUsers(result);
-//
-//                 console.log("users----result", result);
-//             },
-//             (error) => {
-//                 setError(error);
-//             }
-//         )
-// }, []);
