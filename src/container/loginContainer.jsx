@@ -10,7 +10,6 @@ import {useHistory} from 'react-router-dom';
 export const LoginContainer = ({}) => {
     const dispatch = useDispatch();
     const history = useHistory();
-    //const token = localStorage.getItem('token');
 
     const token = useSelector((store) => store.user.user.token);
 

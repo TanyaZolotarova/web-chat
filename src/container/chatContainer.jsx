@@ -10,6 +10,7 @@ import {userSelector} from '../selectors/userSelector'
 
 
 const ChatContainer = ({}) => {
+
     const dispatch = useDispatch();
     const {register, handleSubmit} = useForm(); // hook writing from form
     const {connect} = useContext(WebSocketContext);
@@ -18,15 +19,10 @@ const ChatContainer = ({}) => {
         name: '',
         email: ''
     });
-    const [chats, setChats] = useState([]);
-    const [users, setUsers] = useState([]);
-    const [error, setError] = useState({});
-    const [chat, setChat] = useState([]);
 
-    const [userName, setName] = useState(user.name || '');
+    const [chats, setChats] = useState([]);
     const [userEmail, setEmail] = useState(user.email || '');
     const [userPassword, setPassword] = useState('');
-
     const [activeChatID, setActiveChatID] = useState(null);
 
     const isOnline = true;
@@ -52,6 +48,7 @@ const ChatContainer = ({}) => {
             console.log(chatslist);
             setChats(chatslist);
         });
+
     }, []);
 
     return (
@@ -142,7 +139,6 @@ const ChatContainer = ({}) => {
                                                                    className="form-control"
                                                                     onChange={(e)=> setPassword(e.target.value)}
                                                                    ref={register()}
-                                                                   // onChange={}
                                                                    id="formGroupExampleInput2"
                                                                    placeholder=""
                                                                    readOnly={Boolean(readOnly)}
@@ -155,9 +151,9 @@ const ChatContainer = ({}) => {
                                             </div>
                                             <div className="modal-footer">
                                                 <button type="button" className="btn btn-secondary"
-                                                        data-dismiss="modal">Close
+                                                        data-dismiss="modal"> Close
                                                 </button>
-                                                <button type="button" className="btn btn-primary"
+                                                <button type="button" data-dismiss="modal" className="btn btn-primary"
                                                         onClick={handleSubmit(sendData)}>
                                                     Edit
                                                 </button>
@@ -183,12 +179,26 @@ const ChatContainer = ({}) => {
                                        value={user.name}
                                     //on change handle change \\ on enter put edit in DB
                                 />
+                                <button
+                                    className='mt-2 btn btn-sm btn-info'
+                                    onClick={() => {
+                                    window.localStorage.clear()
+                                    }}>
+                                    Logout
+                                </button>
+
                             </div>
                         </div>
                     </div>
                     <div id="search">
-                        <label htmlFor=""><i className="fa fa-search" aria-hidden="true"/></label>
-                        <input type="text" placeholder="Поиск"/>
+                        <label htmlFor="">
+                            <i className="fa fa-search"
+                               aria-hidden="true"
+                            />
+                        </label>
+                        <input type="text"
+                               placeholder="Поиск"
+                        />
                     </div>
                     <div id="contacts">
                         <ul>
@@ -217,9 +227,8 @@ const ChatContainer = ({}) => {
                                                         {chat.is_group_chat ?
                                                             chat.chat_name :
                                                             chat.creator_id
-                                                            //name
+
                                                         }</p>
-                                                    <p className="preview"> //some text. Fhow it gets </p>
                                                 </div>
 
 
