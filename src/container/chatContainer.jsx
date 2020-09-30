@@ -235,6 +235,33 @@ const ChatContainer = ({}) => {
                             <span> Создать чат </span>
                         </button>
                     </div>
+                    <div className="modal fade" id="createChatModal" tabIndex="-1" role="dialog"
+                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div className="modal-dialog">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5 className="modal-title" id="exampleModalLabel">Modal title</h5>
+                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                    </button>
+                                </div>
+                                <div className="modal-body">
+                                    <div className="input-group mb-3">
+                                        <input type="text" className="form-control" placeholder="Название чата"
+                                               aria-label="Имя пользователя" aria-describedby="basic-addon1"/>
+                                    </div>
+                                    <div className="input-group mb-3">
+                                        <input type="text" className="form-control" placeholder="Участники:"
+                                               aria-label="Имя пользователя" aria-describedby="basic-addon1"/>
+                                    </div>
+                                </div>
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" className="btn btn-primary">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 {activeChatID &&
                 <MessageListComponent
