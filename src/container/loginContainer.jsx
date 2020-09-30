@@ -1,24 +1,19 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {GoogleLogin} from 'react-google-login';
 import {signInGoogleRequest, signInRequest} from "../actions/userActions";
 import {useForm} from "react-hook-form";
 import {useHistory} from 'react-router-dom';
 
-
-
 export const LoginContainer = ({}) => {
     const dispatch = useDispatch();
     const history = useHistory();
+     const token = useSelector((store) => store.user.user.token);
     //const token = localStorage.getItem('token');
-
-    const token = useSelector((store) => store.user.user.token);
-
     const {register, handleSubmit, errors} = useForm(); // hook writing from form
 
     const responseGoogle = (response) => {
         dispatch(signInGoogleRequest(response.profileObj));
-
     }
 
     const responseGoogleFail = (response) => {
@@ -30,7 +25,6 @@ export const LoginContainer = ({}) => {
     };
 
     useEffect(() => {
-
         if(token){
             history.push('/chat');
         }
@@ -72,6 +66,9 @@ export const LoginContainer = ({}) => {
                         />
                         {errors.password && <p className="error error-staff"> {errors.password.message} </p>}
                     </fieldset>
+
+
+
                 </div>
                 <button
                     type="submit"
