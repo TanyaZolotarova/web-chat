@@ -6,6 +6,8 @@ function* getCurrentUserGoogle(action) {
     try {
         const response = yield call(login, action.user);
         yield put(signInGoogleSuccess(response.data))
+        console.log(response.data);
+        localStorage.setItem('token', response.data.token);
 
     } catch (error) {
         console.log(error);
