@@ -42,17 +42,17 @@ function MessageListComponent({chat}) {
             </div>
             <div className="messages">
                 { messages.map((m) => {
-                    return (
+                    return chat.id === m.chatId ? (
                         <ul >
                             <li className="replies" >
                                 <img src="https://rozetked.me/images/uploads/dwoilp3BVjlE.jpg" alt="" />
                                 <p className="p">
-                                    <span className="name-block">{m.name}:</span>
+                                    <span className="name-block">{m.name}: </span>
                                     <span className="messages-span" > </span> {m.text}
                                 </p>
                             </li>
                         </ul>
-                    );
+                    ) : null;
                 })
                 }
             </div>

@@ -17,7 +17,7 @@ const user = (state = initialState, action) => {
                 user: action.user,
                 token: action.user.token,
             }
-            console.log(action.user)
+            // console.log(action.user)
             // window.localStorage.setItem('token', action.user.token);
             // window.localStorage.setItem('user', JSON.stringify(action.user.user));
             // window.localStorage.setItem('name', JSON.stringify(action.user.user.name));
