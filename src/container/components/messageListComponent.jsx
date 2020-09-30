@@ -26,18 +26,18 @@ function MessageListComponent({chat}) {
 
     useEffect(() => {
         socket.on('message', (message) => {
-
-           // if(chat.id === message.chatId) {
-            setMessages((oldChat) => [...oldChat, message]);
+            console.log('NEW MESSAGE!!!', JSON.stringify(message));
+            if(chat.id === message.chatId) {
+               setMessages((oldChat) => [...oldChat, message]);
+           }
         });
 
         socket.emit('getChatHistory', {chatId: chat.id});
 
         socket.on('chatHistory', (messages) => {
             setMessages(messages);
-
         });
-    }, []);
+    }, [chat.id]);
 
 
     return (
@@ -50,7 +50,7 @@ function MessageListComponent({chat}) {
             </div>
             <div className="messages">
                 { messages.map((m) => {
-                    return chat.id === m.chatId ? ( /* todo remove */
+                    return  (
                     <ul >
                             <li className="replies" >
                                 <img src="https://rozetked.me/images/uploads/dwoilp3BVjlE.jpg" alt="" />
@@ -60,7 +60,7 @@ function MessageListComponent({chat}) {
                                 </p>
                             </li>
                         </ul>
-                    ) : null;
+                    );
                 })
                 }
             </div>

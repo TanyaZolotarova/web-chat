@@ -32,8 +32,6 @@ export const user = (state= null , action) => {
                 ...action.data.user,
                 token: action.data.token,
             }
-        // localStorage.setItem('token', action.data.data.token);
-        // localStorage.setItem('user', JSON.stringify(action.data.data.user));
 
 
         // return action.data.data;

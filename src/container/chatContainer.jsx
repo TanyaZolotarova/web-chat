@@ -18,14 +18,8 @@ const ChatContainer = ({}) => {
         email: ''
     });
 
-
     const [chats, setChats] = useState([]);
-    const [users, setUsers] = useState([]);
-    const [error, setError] = useState({});
-    const [chat, setChat] = useState([]);
-
     const [userName, setName] = useState(user.name || '');
-    const [userEmail, setEmail] = useState('');
 
     const [userPassword, setPassword] = useState('');
     const [readOnly, setReadOnly] = useState(false);
@@ -43,6 +37,8 @@ const ChatContainer = ({}) => {
     };
 
     useEffect(() => {
+
+
         if (userSelector) {
             setReadOnly(Boolean(userSelector.googleId));
         }
@@ -54,7 +50,7 @@ const ChatContainer = ({}) => {
         });
 
         socket.on('chatsList', (chatslist) => {
-            // console.log(chatslist);
+            console.log({chatslist});
             setChats(chatslist);
         });
 
@@ -253,11 +249,7 @@ const ChatContainer = ({}) => {
 
                                                 <div className="meta">
                                                     <p className="name">
-                                                        {chat.is_group_chat ?
-                                                            chat.chat_name :
-                                                            chat.creator_id
-
-                                                        }</p>
+                                                        { chat.chat_name }</p>
                                                 </div>
                                             </div>
                                         </li>
