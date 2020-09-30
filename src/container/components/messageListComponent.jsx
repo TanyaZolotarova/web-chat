@@ -9,7 +9,7 @@ function MessageListComponent({chat}) {
     const [currentMessage, setCurrentMessage] = useState('');
     const [messages, setMessages] = useState([]); // chatId, email, name, text
     const {socket, connect} = useContext(WebSocketContext);
-
+//
 // console.log("chat", chat);
 
     const onMessageSubmit = () => {
