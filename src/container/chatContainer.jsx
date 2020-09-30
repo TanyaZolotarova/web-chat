@@ -236,7 +236,7 @@ const ChatContainer = ({}) => {
                                                             chat.creator_id
                                                             //name
                                                         }</p>
-                                                    <p className="preview"> //some text. Fhow it gets </p>
+                                                    {/*<p className="preview"> //some text. Fhow it gets </p>*/}
                                                 </div>
 
 
@@ -288,7 +288,7 @@ const ChatContainer = ({}) => {
                                             // dropdownHeight={this.state.dropdownHeight}
                                             // direction={this.state.direction}
                                             // multi={this.state.multi}
-                                            // values={[options.find(opt => opt.username === "Delphine")]}
+                                            // values={[]}
                                             // labelField={this.state.labelField}
                                             // valueField={this.state.valueField}
                                             options={[]}
@@ -299,7 +299,7 @@ const ChatContainer = ({}) => {
                                             onClearAll={() => undefined}
                                             onSelectAll={() => undefined}
 
-                                            onChange={values => this.setValues(values)}
+                                            onChange={values => getUsers()}
 
                                             noDataLabel="No matches found"
                                         />
