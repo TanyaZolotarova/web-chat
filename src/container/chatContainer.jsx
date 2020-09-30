@@ -1,4 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
+import Select from "react-dropdown-select";
 import MessageListComponent from "./components/messageListComponent";
 // import Gravatar from 'react-gravatar';
 import {WebSocketContext} from "../WebSocket";
@@ -12,13 +13,16 @@ import {userSelector} from '../selectors/userSelector'
 const ChatContainer = ({}) => {
     const dispatch = useDispatch();
     const {register, handleSubmit} = useForm(); // hook writing from form
-    const {connect} = useContext(WebSocketContext);
+    const {connect, socket} = useContext(WebSocketContext);
 
     const [user, setUser] = useState({
         name: '',
         email: ''
     });
+
+    const [chatname,setChatname] = useState('');
     const [chats, setChats] = useState([]);
+    const [onlineUsers, setOnlineUsers] = useState([]);
     const [users, setUsers] = useState([]);
     const [error, setError] = useState({});
     const [chat, setChat] = useState([]);
@@ -42,17 +46,30 @@ const ChatContainer = ({}) => {
 
 
     useEffect(() => {
-        const socket = connect();
+        const socket1 = connect();
 
-        socket.on('connected', (user) => {
+        socket1.on('connected', (user) => {
             setUser(user);
         });
 
-        socket.on('chatsList', (chatslist) => {
+        socket1.on('chatsList', (chatslist) => {
             console.log(chatslist);
             setChats(chatslist);
         });
+
+        socket1.on('online-users', (users) => {
+            console.log(users);
+            setOnlineUsers(users)
+        });
     }, []);
+
+    const handleCreateChat = () => {
+        socket.emit('create-chat', {name: chatname, users: ['1', '3']});
+    }
+
+    const getUsers = () => {
+        socket.emit('online-users', {});
+    }
 
     return (
         <div className="body">
@@ -231,7 +248,7 @@ const ChatContainer = ({}) => {
                         </ul>
                     </div>
                     <div id="bottom-bar">
-                        <button id="addcontact" data-toggle="modal" data-target="#createChatModal">
+                        <button id="addcontact" data-toggle="modal" data-target="#createChatModal" onClick={getUsers}>
                             <span> Создать чат </span>
                         </button>
                     </div>
@@ -247,16 +264,50 @@ const ChatContainer = ({}) => {
                                 <div className="modal-body">
                                     <div className="input-group mb-3">
                                         <input type="text" className="form-control" placeholder="Название чата"
-                                               aria-label="Имя пользователя" aria-describedby="basic-addon1"/>
+                                               aria-label="Имя пользователя" aria-describedby="basic-addon1"
+                                               onChange={(e) => setChatname(e.target.value)}
+                                        value={chatname}
+                                        />
                                     </div>
                                     <div className="input-group mb-3">
-                                        <input type="text" className="form-control" placeholder="Участники:"
-                                               aria-label="Имя пользователя" aria-describedby="basic-addon1"/>
+                                        {/*<input type="text" className="form-control" placeholder="Участники:"*/}
+                                        {/*       aria-label="Имя пользователя" aria-describedby="basic-addon1"/>*/}
+                                        <Select
+                                            placeholder="Select peoples"
+                                            // addPlaceholder={this.state.addPlaceholder}
+                                            // color={this.state.color}
+                                            // disabled={this.state.disabled}
+                                            // loading={this.state.loading}
+                                            // searchBy={this.state.searchBy}
+                                            // separator={this.state.separator}
+                                            // clearable={this.state.clearable}
+                                            // searchable={this.state.searchable}
+                                            // create={this.state.create}
+                                            // keepOpen={this.state.forceOpen}
+                                            // dropdownHandle={this.state.handle}
+                                            // dropdownHeight={this.state.dropdownHeight}
+                                            // direction={this.state.direction}
+                                            // multi={this.state.multi}
+                                            // values={[options.find(opt => opt.username === "Delphine")]}
+                                            // labelField={this.state.labelField}
+                                            // valueField={this.state.valueField}
+                                            options={[]}
+                                            dropdownGap={5}
+                                            keepSelectedInList={true}
+                                            onDropdownOpen={() => undefined}
+                                            onDropdownClose={() => undefined}
+                                            onClearAll={() => undefined}
+                                            onSelectAll={() => undefined}
+
+                                            onChange={values => this.setValues(values)}
+
+                                            noDataLabel="No matches found"
+                                        />
                                     </div>
                                 </div>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="button" className="btn btn-primary">Save changes</button>
+                                    <button type="button" className="btn btn-primary" onClick={handleCreateChat}>Save changes</button>
                                 </div>
                             </div>
                         </div>
