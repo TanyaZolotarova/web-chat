@@ -24,7 +24,7 @@ const ChatContainer = ({}) => {
     const [error, setError] = useState({});
     const [chat, setChat] = useState([]);
 
-    // must be removed
+
     // const [userName, setName] = useState(user.name || '');
     const [userEmail, setEmail] = useState('');
 
