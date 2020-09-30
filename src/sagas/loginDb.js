@@ -9,13 +9,10 @@ import {login, loginDb} from '../service/api.service';
 function* getCurrentUser(action) {
 
     try {
-        const user = {
-            email: action.data.email,
-            password: action.data.password,
-        }
         const response = yield call(loginDb, action.data);
 
-        yield put(signInRequestSuccess(response));
+        yield put(signInRequestSuccess(response.data));
+
         localStorage.setItem('token', response.data.token);
     } catch (error) {
         yield put(signInRequestError(error));
