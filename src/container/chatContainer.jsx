@@ -45,8 +45,12 @@ const ChatContainer = ({}) => {
         });
 
         socket.on('chatsList', (chatslist) => {
-            console.log(chatslist);
+            // console.log(chatslist);
             setChats(chatslist);
+        });
+
+        socket.on('warning', (data) => {
+            alert(data.message); // todo
         });
 
     }, []);
