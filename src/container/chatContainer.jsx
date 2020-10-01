@@ -316,7 +316,7 @@ const ChatContainer = ({}) => {
                                         value={chatname}
                                         />
                                     </div>
-                                    <div className="input-group mb-3">
+                                    <div className="input-group mb-3 text-black-50">
                                         {/*<input type="text" className="form-control" placeholder="Участники:"*/}
                                         {/*       aria-label="Имя пользователя" aria-describedby="basic-addon1"/>*/}
                                         <Multiselect
