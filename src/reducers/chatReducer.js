@@ -5,7 +5,7 @@ const initialState ={
     chat_name: {}
 }
 
-const chatRoom = (state = initialState, action) => {
+export const chatReducer = (state = initialState, action) => {
     switch (action.type) {
         case CREATE_CHAT_SUCCESS:
             return{
@@ -20,7 +20,7 @@ const chatRoom = (state = initialState, action) => {
     }
 }
 
-export const chatReducer = combineReducers({
-    chatRoom
-});
+// export const chatReducer = combineReducers({
+//     chatRoom
+// });
 

@@ -9,7 +9,7 @@ const initialState = {
     token: ''
 }
 
-export const user = (state= null , action) => {
+export const usersReducer = (state= null , action) => {
     switch (action.type) {
         case SIGN_IN_GOOGLE_SUCCESS:
             return {
@@ -51,6 +51,6 @@ export const user = (state= null , action) => {
 
 
 
-export const usersReducer = combineReducers({
-    user
-});
+// export const usersReducer = combineReducers({
+//     user
+// });

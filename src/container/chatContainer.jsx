@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import Select from "react-dropdown-select";
+import { Multiselect } from 'multiselect-react-dropdown';
 import MessageListComponent from "./components/messageListComponent";
 import {WebSocketContext} from "../WebSocket";
 import {GearIcon} from '@primer/octicons-react';
@@ -7,12 +7,32 @@ import {useForm} from "react-hook-form";
 import {updateProfileUserRequest} from "../actions/userActions";
 import {useDispatch, useSelector} from "react-redux";
 import {userSelector} from '../selectors/userSelector'
-
-
+const test_users = [
+    {
+        id: 1,
+        name: "LeanneGraham2",
+        email: "Sincere@april.biz",
+    },
+    {
+        id: 3,
+        name: "Ervin Howell",
+        email: "Shanna@melissa.tv",
+    },
+    {
+        id: 4,
+        name: "Leanne Graham",
+        email: "Sincere@april.biz",
+    },
+    {
+        id: 5,
+        name: "Ervin Howell",
+        email: "Shanna@melissa.tv",
+    }
+];
 const ChatContainer = ({}) => {
 
     const dispatch = useDispatch();
-    const {register, handleSubmit} = useForm(); // hook writing from form
+    const {register, handleSubmit, errors} = useForm(); // hook writing from form
     const {connect, socket} = useContext(WebSocketContext);
 
     const [user, setUser] = useState({
@@ -20,15 +40,11 @@ const ChatContainer = ({}) => {
         email: ''
     });
 
-
+    const [users,setUsers] = useState(test_users);
+    const [selectedUsers,setSelectedUsers] = useState([]);
 
     const [chatname,setChatname] = useState('');
     const [chats, setChats] = useState([]);
-    const [onlineUsers, setOnlineUsers] = useState([]);
-    const [users, setUsers] = useState([]);
-    const [error, setError] = useState({});
-    const [chat, setChat] = useState([]);
-
     const [userName, setName] = useState(user.name || '');
     const [userEmail, setEmail] = useState('');
 
@@ -65,16 +81,30 @@ const ChatContainer = ({}) => {
 
         socket1.on('online-users', (users) => {
             console.log(users);
-            setOnlineUsers(users)
+            setUsers(users)
         });
     }, []);
 
     const handleCreateChat = () => {
-        socket.emit('create-chat', {name: chatname, users: ['1', '3']});
+        if(selectedUsers.length >= 2) {
+            socket.emit('create-chat', {
+                name: chatname,
+                users: [...selectedUsers.map(user => user.id)]
+            });
+        }
     }
 
     const getUsers = () => {
+        console.log(test_users.find(opt => opt.email === "Sincere@april.biz"));
         socket.emit('online-users', {});
+    }
+
+    const onSelect = (selectedList, selectedItem) => {
+        setSelectedUsers(selectedList);
+    }
+
+    const onRemove = (selectedList, removedItem) => {
+        setSelectedUsers(selectedList);
     }
 
     return (
@@ -165,8 +195,7 @@ const ChatContainer = ({}) => {
                                                                    placeholder="email"
                                                                    readOnly={readOnly}
                                                             />
-                                                            {errors.email &&
-                                                            <p className="error error-email error-staff">{errors.email.message}</p>}
+                                                            {errors.email && <p className="error error-email error-staff">{errors.email.message}</p>}
                                                         </fieldset>
                                                     </div>
                                                     <div className="form-group">
@@ -307,36 +336,12 @@ const ChatContainer = ({}) => {
                                     <div className="input-group mb-3">
                                         {/*<input type="text" className="form-control" placeholder="Участники:"*/}
                                         {/*       aria-label="Имя пользователя" aria-describedby="basic-addon1"/>*/}
-                                        <Select
-                                            placeholder="Select peoples"
-                                            // addPlaceholder={this.state.addPlaceholder}
-                                            // color={this.state.color}
-                                            // disabled={this.state.disabled}
-                                            // loading={this.state.loading}
-                                            // searchBy={this.state.searchBy}
-                                            // separator={this.state.separator}
-                                            // clearable={this.state.clearable}
-                                            // searchable={this.state.searchable}
-                                            // create={this.state.create}
-                                            // keepOpen={this.state.forceOpen}
-                                            // dropdownHandle={this.state.handle}
-                                            // dropdownHeight={this.state.dropdownHeight}
-                                            // direction={this.state.direction}
-                                            // multi={this.state.multi}
-                                            // values={[]}
-                                            // labelField={this.state.labelField}
-                                            // valueField={this.state.valueField}
-                                            options={[]}
-                                            dropdownGap={5}
-                                            keepSelectedInList={true}
-                                            onDropdownOpen={() => undefined}
-                                            onDropdownClose={() => undefined}
-                                            onClearAll={() => undefined}
-                                            onSelectAll={() => undefined}
-
-                                            onChange={values => getUsers()}
-
-                                            noDataLabel="No matches found"
+                                        <Multiselect
+                                            options={users} // Options to display in the dropdown
+                                            selectedValues={selectedUsers} // Preselected value to persist in dropdown
+                                            onSelect={onSelect} // Function will trigger on select event
+                                            onRemove={onRemove} // Function will trigger on remove event
+                                            displayValue="name" // Property name to display in the dropdown options
                                         />
                                     </div>
                                 </div>
