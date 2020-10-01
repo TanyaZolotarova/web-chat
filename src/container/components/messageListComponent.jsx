@@ -19,7 +19,6 @@ function MessageListComponent({chat, users }) {
         if(event.key === 'Enter'){
             onMessageSubmit();
             setCurrentMessage('');
-            scrollDown();
         }
     }
 
