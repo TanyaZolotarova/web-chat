@@ -5,9 +5,8 @@ class ProtectedRoute extends React.Component {
 
     render() {
         const Component = this.props.component;
-        const isAuthenticated = localStorage.getItem('token');
 
-        return isAuthenticated
+        return window.localStorage.getItem('token')
             ? <Component/>
             : <Redirect to={{pathname: '/'}}/>;
     }
