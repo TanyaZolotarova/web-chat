@@ -9,8 +9,6 @@ function MessageListComponent({chat, users }) {
     const [currentMessage, setCurrentMessage] = useState('');
     const [messages, setMessages] = useState([]); // userId, chatId, email, name, text
     const {socket} = useContext(WebSocketContext);
-    const ref = useRef();
-
 
     const onMessageSubmit = () => {
         socket.emit('message', {message: currentMessage, chatId: chat.id});
@@ -21,15 +19,15 @@ function MessageListComponent({chat, users }) {
         if(event.key === 'Enter'){
             onMessageSubmit();
             setCurrentMessage('');
-            scroll();
+            scrollDown();
         }
     }
 
-    const scroll = () =>
-        ref && ref.current && ref.current.scrollIntoView({ behavior: "smooth" });
+    const scrollDown = (e) => {
+        document.querySelector('li.replies:nth-last-child(1)').scrollIntoView();
+    };
 
     useEffect(() => {
-
         socket.on('message', (message) => {
             console.log('NEW MESSAGE!!!', JSON.stringify(message));
 
@@ -51,33 +49,28 @@ function MessageListComponent({chat, users }) {
     }, [chat.id]);
 
     return (
-        <div className="content">
+        <div className="content" onLoad={scrollDown}>
             <div className="contact-profile margin-bottom10">
                 <img src="//from db" alt=""/>
                 <p>
                     {chat.chat_name}
                 </p>
             </div>
-            <div className="messages" >
-                { messages.map((m) => {
-                    return  (
-                    <ul key={m.id}
-                    >
-                            <li className="replies"
-                                ref={ref}
-                                onLoad={scroll}>
+            <div className="messages pb-4">
+                <ul>
+                    { messages.map((m, index) => {
+                        return  (
+                            <li key={m.id} className="replies">
                                 <img src="https://rozetked.me/images/uploads/dwoilp3BVjlE.jpg" alt="" />
                                 <p className="p">
                                     <span className="name-block">{ users[m.userId].name }: </span>
-                                    <span className="messages-span"
-                                          >
-                                    </span> {m.message}
+                                    <span className="messages-span">{m.message}</span>
                                 </p>
                             </li>
-                        </ul>
-                    );
-                })
-                }
+                        );
+                    })
+                    }
+                </ul>
             </div>
 
             <div className="message-input mt-2">
