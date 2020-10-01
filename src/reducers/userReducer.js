@@ -1,7 +1,7 @@
 import {combineReducers} from "redux";
 import {
     SIGN_IN_GOOGLE_SUCCESS,
-    SIGN_IN_REQUEST_SUCCESS, UPDATE_USER_SUCCESS
+    SIGN_IN_REQUEST_SUCCESS, SIGN_OUT, UPDATE_USER_SUCCESS
 } from "../actions/userActions";
 
 // const initialState = {
@@ -14,7 +14,7 @@ export const user = (state= null , action) => {
         case SIGN_IN_GOOGLE_SUCCESS:
             return {
                 ...state,
-                ...action.user,
+                ...action.user.user,
                 token: action.user.token,
             }
             // console.log(action.user)
@@ -40,6 +40,8 @@ export const user = (state= null , action) => {
                 ...state,
                 ...action.data,
             }
+        case SIGN_OUT:
+            return {};
         default:
             return {
                 ...state

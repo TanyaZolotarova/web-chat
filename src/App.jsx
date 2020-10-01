@@ -18,12 +18,11 @@ function App() {
             <div>
                 <Switch>
 
+                    <ProtectedRoute path='/chat' component={ChatContainer} />
+                    {/*<ProtectedRoute exact={true} path='/' component={LoginContainer} />*/}
                     <Route exact={true} path='/'>
-                        {window.localStorage.getItem('token') ? <Redirect to="/chat" /> : <LoginContainer />}
+                        {localStorage.getItem('token') ? <Redirect to="/chat" /> : <LoginContainer/>}
                     </Route>
-
-                    <ProtectedRoute exact={true} path='/chat' component={ChatContainer} />
-
                 </Switch>
             </div>
             </WebSocketProvider>

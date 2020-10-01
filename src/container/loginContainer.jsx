@@ -9,7 +9,7 @@ export const LoginContainer = ({}) => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-     const token = useSelector((store) => store.user.token);
+    const token = useSelector((store) => store.user.token);
 
     const {register, handleSubmit, errors} = useForm(); // hook writing from form
 
@@ -26,10 +26,10 @@ export const LoginContainer = ({}) => {
     };
 
     useEffect(() => {
-        if(token){
+        if (token) {
             history.push('/chat');
         }
-    },[token]);
+    }, [token]);
 
     return (
         <div>
@@ -45,7 +45,7 @@ export const LoginContainer = ({}) => {
                                ref={register({
                                    required: "Enter Email",
                                    pattern: {
-                                       value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i,
+                                       value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/i,
                                        message: "Enter a valid email",
                                    }
                                })}
@@ -67,7 +67,6 @@ export const LoginContainer = ({}) => {
                         />
                         {errors.password && <p className="error error-staff"> {errors.password.message} </p>}
                     </fieldset>
-
 
 
                 </div>
