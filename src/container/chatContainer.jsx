@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import MessageListComponent from "./components/messageListComponent";
 import {WebSocketContext} from "../WebSocket";
 import {GearIcon} from '@primer/octicons-react';
@@ -18,6 +18,8 @@ const ChatContainer = ({}) => {
         email: ''
     });
 
+    const [users, setUsers] = useState([]);
+
     const [chats, setChats] = useState([]);
     const [userName, setName] = useState(user.name || '');
 
@@ -35,6 +37,7 @@ const ChatContainer = ({}) => {
         socket.emit('editUser', {name: userName});
         dispatch(updateProfileUserRequest({...data, userId: user.id}));
     };
+
 
     useEffect(() => {
 
@@ -56,6 +59,14 @@ const ChatContainer = ({}) => {
 
         socket.on('warning', (data) => {
             alert(data.message); // todo
+        });
+
+        socket.emit('getUsersList', {});
+
+        socket.on('usersList', (usersList) => {
+            const usersByKey = Object.fromEntries(usersList.map((user) => [user.id, user]));
+            console.log({usersByKey});
+            setUsers(usersByKey);
         });
 
     }, []);
@@ -243,11 +254,10 @@ const ChatContainer = ({}) => {
                                             <div className="wrap">
                                                 <span className={isOnline ? 'contact-status online'
                                                     : 'contact-status offline'}> </span>
-                                                <img src={chatImage}
-                                                     alt=""/>
+                                                <img className="chatlist contact"  src={chatImage} alt=""/>
 
 
-                                                <div className="meta">
+                                                <div className="meta d-none d-md-inline-block">
                                                     <p className="name">
                                                         { chat.chat_name }</p>
                                                 </div>
@@ -295,6 +305,7 @@ const ChatContainer = ({}) => {
                 {activeChatID &&
                 <MessageListComponent
                     chat={chats.find(el => el.id === activeChatID)}
+                    users={users}
                 />}
             </div>
         </div>

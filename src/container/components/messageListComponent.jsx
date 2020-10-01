@@ -5,12 +5,12 @@ import {WebSocketContext} from "../../WebSocket";
 // import {useDispatch, useSelector} from "react-redux";
 // import {CancelTokenStatic as props} from "axios";
 
-function MessageListComponent({chat}) {
+function MessageListComponent({chat, users }) {
     const [currentMessage, setCurrentMessage] = useState('');
-    const [messages, setMessages] = useState([]); // chatId, email, name, text
+    const [messages, setMessages] = useState([]); // userId, chatId, email, name, text
     const {socket} = useContext(WebSocketContext);
-//
-// console.log("chat", chat);
+    const ref = useRef();
+
 
     const onMessageSubmit = () => {
         socket.emit('message', {message: currentMessage, chatId: chat.id});
@@ -21,24 +21,34 @@ function MessageListComponent({chat}) {
         if(event.key === 'Enter'){
             onMessageSubmit();
             setCurrentMessage('');
+            scroll();
         }
     }
 
+    const scroll = () =>
+        ref && ref.current && ref.current.scrollIntoView({ behavior: "smooth" });
+
     useEffect(() => {
+
         socket.on('message', (message) => {
             console.log('NEW MESSAGE!!!', JSON.stringify(message));
+
             if(chat.id === message.chatId) {
-               setMessages((oldChat) => [...oldChat, message]);
+                setMessages((oldChat) => [...oldChat, message]);
+
            }
         });
 
         socket.emit('getChatHistory', {chatId: chat.id});
 
-        socket.on('chatHistory', (messages) => {
-            setMessages(messages);
+        socket.on('chatHistory', (messagesList) => {
+            setMessages(messagesList);
         });
-    }, [chat.id]);
 
+        return () => {
+            socket.off('message');
+        };
+    }, [chat.id]);
 
     return (
         <div className="content">
@@ -48,15 +58,20 @@ function MessageListComponent({chat}) {
                     {chat.chat_name}
                 </p>
             </div>
-            <div className="messages">
+            <div className="messages" >
                 { messages.map((m) => {
                     return  (
-                    <ul >
-                            <li className="replies" >
+                    <ul key={m.id}
+                    >
+                            <li className="replies"
+                                ref={ref}
+                                onLoad={scroll}>
                                 <img src="https://rozetked.me/images/uploads/dwoilp3BVjlE.jpg" alt="" />
                                 <p className="p">
-                                    <span className="name-block">{m.name}: </span>
-                                    <span className="messages-span" > </span> {m.message}
+                                    <span className="name-block">{ users[m.userId].name }: </span>
+                                    <span className="messages-span"
+                                          >
+                                    </span> {m.message}
                                 </p>
                             </li>
                         </ul>
@@ -65,7 +80,7 @@ function MessageListComponent({chat}) {
                 }
             </div>
 
-            <div className="message-input">
+            <div className="message-input mt-2">
                 <div className="wrap">
                     <input
                         type="text"
