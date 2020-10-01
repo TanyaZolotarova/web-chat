@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import MessageListComponent from "./components/messageListComponent";
 import {WebSocketContext} from "../WebSocket";
 import {GearIcon} from '@primer/octicons-react';
@@ -11,7 +11,6 @@ import {browserHistory} from 'react-router';
 import {logOut}   from "../actions/userActions";
 
 const ChatContainer = ({}) => {
-    // const history = useHistory();
     const browserHistory = useHistory();
     const dispatch = useDispatch();
     const {register, handleSubmit, errors} = useForm(); // hook writing from form
@@ -27,15 +26,7 @@ const ChatContainer = ({}) => {
 
     const [chats, setChats] = useState([]);
     const [users, setUsers] = useState([]);
-    const [error, setError] = useState({});
-    const [chat, setChat] = useState([]);
 
-
-
-     const [userName, setName] = useState('');
-    const [userEmail, setEmail] = useState('');
-
-    const [userPassword, setPassword] = useState('');
     const [readOnly, setReadOnly] = useState(false);
 
     const [activeChatID, setActiveChatID] = useState(null);
@@ -74,7 +65,7 @@ const ChatContainer = ({}) => {
         });
 
         socket.on('chatsList', (chatslist) => {
-            // console.log(chatslist);
+            console.log({chatslist});
             setChats(chatslist);
         });
 
@@ -82,9 +73,18 @@ const ChatContainer = ({}) => {
             alert(data.message); // todo
         });
 
+        socket.emit('getUsersList', {});
+
+        socket.on('usersList', (usersList) => {
+            const usersByKey = Object.fromEntries(usersList.map((user) => [user.id, user]));
+            console.log({usersByKey});
+            setUsers(usersByKey);
+        });
+
     }, []);
 
     const clearReduxState = () => {
+        console.log('LOGOUT');
         dispatch(logOut());
         browserHistory.push('/');
     };
@@ -135,7 +135,7 @@ const ChatContainer = ({}) => {
 
                                 <div className="modal fade Modal" id="staticBackdrop" data-backdrop="static"
                                      data-keyboard="false"
-                                     tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel"
+                                     tabIndex="-1" role="dialog" aria-labelledby="staticBackdropLabel"
                                      aria-hidden="true">
                                     <div className="modal-dialog">
                                         <div className="modal-content">
@@ -209,7 +209,7 @@ const ChatContainer = ({}) => {
                                                                                    ...user,
                                                                                    password: e.target.value
                                                                                })}
-                                                                           ref={register()}
+                                                                           // ref={register()}
                                                                            id="formGroupExampleInput2"
                                                                            readOnly={readOnly}
                                                                     />
@@ -283,17 +283,12 @@ const ChatContainer = ({}) => {
                                             <div className="wrap">
                                                 <span className={isOnline ? 'contact-status online'
                                                     : 'contact-status offline'}> </span>
-                                                <img src={chatImage}
-                                                     alt=""/>
+                                                <img className="chatlist contact"  src={chatImage} alt=""/>
 
 
-                                                <div className="meta">
+                                                <div className="meta d-none d-md-inline-block">
                                                     <p className="name">
-                                                        {chat.is_group_chat ?
-                                                            chat.chat_name :
-                                                            chat.creator_id
-
-                                                        }</p>
+                                                        { chat.chat_name }</p>
                                                 </div>
                                             </div>
                                         </li>
@@ -339,6 +334,7 @@ const ChatContainer = ({}) => {
                 {activeChatID &&
                 <MessageListComponent
                     chat={chats.find(el => el.id === activeChatID)}
+                    users={users}
                 />}
             </div>
         </div>
