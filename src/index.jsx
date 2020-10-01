@@ -23,7 +23,7 @@ sagaMiddleware.run(rootSaga);
 const app = (
     <Provider store={store}>
         <React.StrictMode>
-            <App />
+            <App/>
         </React.StrictMode>
     </Provider>
 )

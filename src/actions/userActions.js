@@ -9,6 +9,12 @@ export const UPDATE_USER_REQUEST = '[update] update user data request';
 export const UPDATE_USER_SUCCESS = '[update] update user data success';
 export const UPDATE_USER_ERROR = '[update] update user data error';
 
+export const SIGN_OUT = '[login] user logged out';
+
+export const logOut = () => ({
+    type: SIGN_OUT
+});
+
 export const signInGoogleRequest = (user) => ({
     type: SIGN_IN_GOOGLE_REQUEST,
     user
