@@ -45,7 +45,7 @@ export const LoginContainer = ({}) => {
                                ref={register({
                                    required: "Enter Email",
                                    pattern: {
-                                       value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i,
+                                       value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/i,
                                        message: "Enter a valid email",
                                    }
                                })}
