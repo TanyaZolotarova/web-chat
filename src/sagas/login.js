@@ -1,5 +1,5 @@
 import { call, delay, put, takeLatest } from 'redux-saga/effects';
-import { SIGN_IN_GOOGLE_REQUEST, signInGoogleSuccess, signInGoogleError } from '../actions/userActions';
+import {SIGN_IN_GOOGLE_REQUEST, signInGoogleSuccess, signInGoogleError, SIGN_OUT} from '../actions/userActions';
 import { login } from '../service/api.service';
 
 function* getCurrentUserGoogle(action) {
@@ -17,6 +17,11 @@ function* getCurrentUserGoogle(action) {
 
 }
 
+function* logOut() {
+    localStorage.clear();
+}
+
 export default function* actionLogin () {
     yield takeLatest(SIGN_IN_GOOGLE_REQUEST, getCurrentUserGoogle)
+    yield takeLatest(SIGN_OUT, logOut)
 }

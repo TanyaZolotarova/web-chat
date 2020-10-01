@@ -8,6 +8,7 @@ export default ({ children }) => {
     const [connection, setConnection] = useState(null);
 
     const connect = () => {
+        console.log('RUN')
         const token = window.localStorage.getItem('token');
         const SOCKET_IO_URL = `http://localhost:8000/?token=${token}`;
         const socket = io(SOCKET_IO_URL);
