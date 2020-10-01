@@ -11,7 +11,6 @@ import {browserHistory} from 'react-router';
 import {logOut}   from "../actions/userActions";
 
 const ChatContainer = ({}) => {
-    // const history = useHistory();
     const browserHistory = useHistory();
     const dispatch = useDispatch();
     const {register, handleSubmit, errors} = useForm(); // hook writing from form
@@ -28,9 +27,6 @@ const ChatContainer = ({}) => {
     const [chats, setChats] = useState([]);
     const [users, setUsers] = useState([]);
 
-    const [userName, setName] = useState( '');
-
-    const [userPassword, setPassword] = useState('');
     const [readOnly, setReadOnly] = useState(false);
 
     const [activeChatID, setActiveChatID] = useState(null);
@@ -88,6 +84,7 @@ const ChatContainer = ({}) => {
     }, []);
 
     const clearReduxState = () => {
+        console.log('LOGOUT');
         dispatch(logOut());
         browserHistory.push('/');
     };
@@ -138,7 +135,7 @@ const ChatContainer = ({}) => {
 
                                 <div className="modal fade Modal" id="staticBackdrop" data-backdrop="static"
                                      data-keyboard="false"
-                                     tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel"
+                                     tabIndex="-1" role="dialog" aria-labelledby="staticBackdropLabel"
                                      aria-hidden="true">
                                     <div className="modal-dialog">
                                         <div className="modal-content">
@@ -212,7 +209,7 @@ const ChatContainer = ({}) => {
                                                                                    ...user,
                                                                                    password: e.target.value
                                                                                })}
-                                                                           ref={register()}
+                                                                           // ref={register()}
                                                                            id="formGroupExampleInput2"
                                                                            readOnly={readOnly}
                                                                     />
