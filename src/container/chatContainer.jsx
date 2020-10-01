@@ -23,7 +23,7 @@ const ChatContainer = ({}) => {
         email: ''
     });
 
-    const [users,setUsers] = useState(test_users);
+    const [users,setUsers] = useState();
     const [selectedUsers,setSelectedUsers] = useState([]);
 
     const [chatname,setChatname] = useState('');
@@ -92,7 +92,7 @@ const ChatContainer = ({}) => {
     }
 
     const getUsers = () => {
-        console.log(test_users.find(opt => opt.email === "Sincere@april.biz"));
+        // console.log(test_users.find(opt => opt.email === "Sincere@april.biz"));
         socket.emit('online-users', {});
     }
 
@@ -331,7 +331,12 @@ const ChatContainer = ({}) => {
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-secondary" data-dismiss="modal">Close
                                     </button>
-                                    <button type="button" className="btn btn-primary" onClick={handleCreateChat}>Save changes</button>
+                                    <button type="button"
+                                            className="btn btn-primary"
+                                            onClick={handleCreateChat}
+                                            data-dismiss="modal"
+                                            aria-label="Close"
+                                    >Save changes</button>
                                 </div>
                             </div>
                         </div>
