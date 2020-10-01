@@ -30,6 +30,9 @@ const ChatContainer = ({}) => {
 
     const [chatname,setChatname] = useState('');
     const [chats, setChats] = useState([]);
+
+    console.log("chats", chats)
+
     const [users, setUsers] = useState([]);
 
     const [readOnly, setReadOnly] = useState(false);
@@ -356,7 +359,7 @@ const ChatContainer = ({}) => {
                                         {/*<input type="text" className="form-control" placeholder="Участники:"*/}
                                         {/*       aria-label="Имя пользователя" aria-describedby="basic-addon1"/>*/}
                                         <Multiselect
-                                            options={users} // Options to display in the dropdown
+                                            options={ Object.values(users)} // Options to display in the dropdown
                                             selectedValues={selectedUsers} // Preselected value to persist in dropdown
                                             onSelect={onSelect} // Function will trigger on select event
                                             onRemove={onRemove} // Function will trigger on remove event
