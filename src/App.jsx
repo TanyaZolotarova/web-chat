@@ -3,14 +3,15 @@ import './App.css';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom"
 import LoginContainer from "./container/loginContainer";
 import ChatContainer from "./container/chatContainer";
-import ProtectedRoute from "./helper/protectedRoute";
+import { ProtectedRoute } from "./helper/protectedRoute";
 import { Redirect } from 'react-router-dom';
 
 
 import WebSocketProvider from "./WebSocket";
+import {useSelector} from "react-redux";
 
 function App() {
-
+    const isLogged = useSelector(state => state.user.isLogged);
 
     return (
         <Router>
@@ -18,10 +19,10 @@ function App() {
             <div>
                 <Switch>
 
-                    <ProtectedRoute path='/chat' component={ChatContainer}/>
+                    <ProtectedRoute path='/chat' render={ChatContainer}/>
                     {/*<ProtectedRoute exact={true} path='/' component={LoginContainer} />*/}
                     <Route exact={true} path='/'>
-                        {localStorage.getItem('token') ? <Redirect to="/chat" /> : <LoginContainer/>}
+                        {isLogged ? <Redirect to="/chat" /> : <LoginContainer/>}
                     </Route>
                 </Switch>
             </div>

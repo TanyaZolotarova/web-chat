@@ -5,17 +5,24 @@ import {
 } from "../actions/userActions";
 
 const initialState = {
-    user: {},
-    token: ''
+    // user: {},
+    // token: '',
+    isLogged: Boolean(localStorage.getItem('token')),
 }
 
-export const usersReducer = (state= null , action) => {
+//fixme
+// export const usersReducer = (state= null , action) => {
+//
+// }
+
+export const user = (state= initialState , action) => {
     switch (action.type) {
         case SIGN_IN_GOOGLE_SUCCESS:
             return {
                 ...state,
                 ...action.user.user,
                 token: action.user.token,
+                isLogged: true,
             }
             // console.log(action.user)
             // window.localStorage.setItem('token', action.user.token);
@@ -31,6 +38,7 @@ export const usersReducer = (state= null , action) => {
                 ...state,
                 ...action.data.user,
                 token: action.data.token,
+                isLogged: true,
             }
 
 
@@ -41,7 +49,9 @@ export const usersReducer = (state= null , action) => {
                 ...action.data,
             }
         case SIGN_OUT:
-            return {};
+            return {
+                isLogged: false,
+            };
         default:
             return {
                 ...state
