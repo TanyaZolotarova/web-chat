@@ -19,7 +19,7 @@ function App() {
             <div>
                 <Switch>
 
-                    <ProtectedRoute path='/chat' render={ChatContainer} />
+                    <ProtectedRoute path='/chat' render={ChatContainer}/>
                     {/*<ProtectedRoute exact={true} path='/' component={LoginContainer} />*/}
                     <Route exact={true} path='/'>
                         {isLogged ? <Redirect to="/chat" /> : <LoginContainer/>}

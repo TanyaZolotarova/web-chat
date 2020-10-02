@@ -167,6 +167,15 @@
   color: crimson;
 }
 
+.btn-login{
+  margin-bottom: 20px;
+}
+
+.btn-modal-edit{
+  display: flex;
+  align-items: baseline;
+}
+
 @media screen and (max-width: 360px) {
   #frame {
     width: 100%;

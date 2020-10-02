@@ -4,8 +4,16 @@ import MessageListComponent from "./components/messageListComponent";
 import {WebSocketContext} from "../WebSocket";
 import {GearIcon} from '@primer/octicons-react';
 import {useForm} from "react-hook-form";
-import {useDispatch} from "react-redux";
 import {logOut} from "../actions/userActions";
+import {useDispatch, useSelector} from "react-redux";
+import {useHistory} from "react-router-dom";
+
+
+import InputComponent from "./components/InputComponent";
+import {renderToStaticNodeStream} from "react-dom/server";
+import ButtonComponent from "./components/ButtonComponent";
+import {userSelector} from "../selectors/userSelector";
+
 
 const ChatContainer = ({}) => {
     const dispatch = useDispatch();
@@ -19,10 +27,12 @@ const ChatContainer = ({}) => {
         password: '',
     });
 
-    const [selectedUsers,setSelectedUsers] = useState([]);
+    const [selectedUsers, setSelectedUsers] = useState([]);
     const [currentUser, setCurrentUser] = useState({});
-    const [chatname,setChatname] = useState('');
+    const [chatname, setChatname] = useState('');
     const [chats, setChats] = useState([]);
+    // console.log("==> CHATS ", chats)
+
     const [users, setUsers] = useState([]);
     const [onlineUsersIds, setOnlineUsersIds] = useState([]);
     const [activeChatID, setActiveChatID] = useState(null);
@@ -34,6 +44,7 @@ const ChatContainer = ({}) => {
     };
 
     useEffect(() => {
+
         const socket = connect();
 
         socket.on('updateUser', (user) => {
@@ -53,6 +64,7 @@ const ChatContainer = ({}) => {
         });
 
         socket.on('chatsList', (chatslist) => {
+
             setChats(chatslist);
         });
 
@@ -61,7 +73,7 @@ const ChatContainer = ({}) => {
         });
 
         socket.on('online-users', (users) => {
-            const usersByKey = Object.fromEntries(users.map((user) => [user.id, user]));
+            const usersByKey = Object.fromEntries( users.map((user) => [user.id, user]));
             setUsers(usersByKey)
         });
 
@@ -91,7 +103,7 @@ const ChatContainer = ({}) => {
     };
 
     const handleCreateChat = () => {
-        if(selectedUsers.length >= 1) {
+        if (selectedUsers.length >= 1) {
             socket.emit('create-chat', {
                 name: chatname,
                 users: [...selectedUsers.map(user => user.id)]
@@ -164,98 +176,101 @@ const ChatContainer = ({}) => {
                                             </div>
                                             <div className="modal-body">
                                                 <form>
-                                                    <div className="form-group">
-                                                        <fieldset>
-                                                            <label htmlFor="formGroupExampleInput1">Name</label>
-                                                            <input type="text"
-                                                                   className="form-control"
-                                                                   name="name"
-                                                                   value={user.name}
-                                                                   onChange={(e) => { setUser({
-                                                                                           ...user,
-                                                                                           name: e.target.value
-                                                                                           })
-                                                                                        }
-                                                                                       }
-                                                                   id="formGroupExampleInput1"
-                                                                   placeholder="name"/>
-                                                        </fieldset>
-                                                    </div>
-                                                    <div className="form-group">
-                                                        <fieldset>
-                                                            <label htmlFor="formGroupExampleInput">Email</label>
-                                                            <input type="email"
-                                                                   name="email"
-                                                                   className="form-control"
-                                                                   id="formGroupExampleInput"
-                                                                   value={user.email}
-                                                                   onChange={(e) => setUser({
-                                                                           ...user,
-                                                                           email: e.target.value
-                                                                       })}
-                                                                   ref={register({
-                                                                       pattern: {
-                                                                           value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i,
-                                                                           message: "Enter a valid email",
-                                                                       }
+                                                    <InputComponent
+                                                        title="Name"
+                                                        htmlFor="formGroupExampleInput1"
+                                                        className="form-control"
+                                                        name="name"
+                                                        value={user.name}
+                                                        onChange={(e) => {
+                                                            setUser({
+                                                                ...user,
+                                                                name: e.target.value
+                                                            })
+                                                        }
+                                                        }
+                                                        id="formGroupExampleInput1"
+                                                        placeholder="name"
+                                                    />
 
-                                                                   })}
-                                                                   placeholder="email"
-                                                                   readOnly={Boolean(currentUser.googleId)}
-                                                            />
-                                                            {errors.email &&
-                                                            <p className="error error-email error-staff">
-                                                                {errors.email.message}</p>}
-                                                        </fieldset>
-                                                    </div>
+                                                    <InputComponent
+                                                        title="Email"
+                                                        type="email"
+                                                        htmlFor="formGroupExampleInput"
+                                                        className="form-control"
+                                                        name="name"
+                                                        value={user.email}
+                                                        onChange={(e) => {
+                                                            setUser({
+                                                                ...user,
+                                                                email: e.target.value
+                                                            })
+                                                        }
+                                                        }
+                                                        id="formGroupExampleInput"
+                                                        placeholder="email"
+                                                        inputRef={register({
+                                                            pattern: {
+                                                                value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i,
+                                                                message: "Enter a valid email",
+                                                            }
+
+                                                        })}
+                                                        readOnly={Boolean(currentUser.googleId)}
+                                                        errors={errors.email &&
+                                                        <p className="error error-email error-staff">
+                                                            {errors.email.message}</p>}
+                                                    />
                                                     {
                                                         !Boolean(currentUser.googleId) ? (
-                                                            <div className="form-group">
-                                                                <fieldset>
-                                                                    <label
-                                                                        htmlFor="formGroupExampleInput2">Password</label>
-                                                                    <input type="password"
-                                                                           name="password"
-                                                                           className="form-control"
-                                                                           onChange={(e) =>
-                                                                               setUser({
-                                                                                   ...user,
-                                                                                   password: e.target.value
-                                                                               })}
-                                                                           // ref={register()}
-                                                                           id="formGroupExampleInput2"
-                                                                           readOnly={Boolean(currentUser.googleId)}
-                                                                    />
-                                                                </fieldset>
-                                                            </div>
+                                                            <InputComponent
+                                                                title="Password"
+                                                                type="password"
+                                                                htmlFor="formGroupExampleInput2"
+                                                                className="form-control"
+                                                                name="password"
+                                                                onChange={(e) => {
+                                                                    setUser({
+                                                                        ...user,
+                                                                        password: e.target.value
+                                                                    })
+                                                                }
+                                                                }
+                                                                id="formGroupExampleInput2"
+
+                                                            />
+
                                                         ) : null
                                                     }
                                                 </form>
 
                                             </div>
-                                            <div className="modal-footer">
-                                                <button type="button"
-                                                        className="btn btn-outline-warning"
-                                                        data-dismiss="modal"
-                                                >Close
-                                                </button>
+                                            <div className="modal-footer btn-modal-edit">
 
-                                                <button type="button"
-                                                        className="btn btn-outline-success"
-                                                        data-dismiss="modal"
-                                                        onClick={handleSubmit(sendData)}
-                                                        disabled={errors.password || errors.email}
-                                                >Edit
-                                                </button>
-
-                                                <button
-                                                    className=" mt-2 btn  btn-outline-danger"
-                                                    data-dismiss="modal"
-                                                    aria-label="Close"
+                                                <ButtonComponent
                                                     type="button"
-                                                    onClick={() => { clearReduxState()}}>
-                                                    Logout
-                                                </button>
+                                                    className="btn btn-outline-warning"
+                                                    dataDismiss="modal"
+                                                    title="Close"
+                                                />
+                                                <ButtonComponent
+                                                    type="button"
+                                                    className="btn btn-outline-success"
+                                                    dataDismiss="modal"
+                                                    onClick={handleSubmit(sendData)}
+                                                    disabled={errors.password || errors.email}
+                                                    title="Edit"
+                                                />
+                                                <ButtonComponent
+                                                    className=" mt-2 btn btn-outline-danger"
+                                                    data-dismiss="modal"
+                                                    ariaLabel="Close"
+                                                    type="button"
+                                                    onClick={() => {
+                                                        clearReduxState()
+                                                    }}
+                                                    title="Logout"
+                                                />
                                             </div>
                                         </div>
                                     </div>
@@ -308,20 +323,20 @@ const ChatContainer = ({}) => {
                         </ul>
                     </div>
                     <div id="bottom-bar">
-                        <button id="addcontact" data-toggle="modal" data-target="#createChatModal" onClick={ () => {
+                        <button id="addcontact" data-toggle="modal" data-target="#createChatModal" onClick={() => {
                             getUsers()
                         }}>
                             <span> Создать чат </span>
                         </button>
                     </div>
+
                     <div className="modal fade" id="createChatModal" tabIndex="-1" role="dialog"
                          aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div className="modal-dialog">
                             <div className="modal-content">
                                 <div className="modal-header">
                                     <h5 className="modal-title" id="exampleModalLabel">Создать чат</h5>
-                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                    </button>
+                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close"/>
                                 </div>
                                 <div className="modal-body">
                                     <div className="input-group mb-3">
@@ -344,15 +359,24 @@ const ChatContainer = ({}) => {
                                     </div>
                                 </div>
                                 <div className="modal-footer">
-                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Close
-                                    </button>
-                                    <button type="button"
-                                            className="btn btn-primary"
-                                            onClick={ () => {handleCreateChat()}}
-                                            data-dismiss="modal"
-                                            aria-label="Close"
-                                            disabled={selectedUsers.length <= 1}
-                                    >Save changes</button>
+                                    <ButtonComponent
+                                    type="button"
+                                    className="btn btn-secondary"
+                                    dataDismiss="modal"
+                                    title = "Close"
+                                    />
+                                      <ButtonComponent
+                                    type="button"
+                                    className="btn btn-primary"
+                                    dataDismiss="modal"
+                                    title = "Save changes"
+                                     onClick={() => {
+                                                handleCreateChat()
+                                            }}
+                                     ariaLabel="Close"
+                                     disabled={selectedUsers.length <= 1}
+                                    />
+
                                 </div>
                             </div>
                         </div>
@@ -366,7 +390,8 @@ const ChatContainer = ({}) => {
                 />}
             </div>
         </div>
-    );
+    )
+        ;
 }
 
 export default ChatContainer;

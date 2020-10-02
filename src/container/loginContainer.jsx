@@ -4,6 +4,8 @@ import {GoogleLogin} from 'react-google-login';
 import {signInGoogleRequest, signInRequest} from "../actions/userActions";
 import {useForm} from "react-hook-form";
 import {useHistory} from 'react-router-dom';
+import InputComponent from "./components/InputComponent";
+import ButtonComponent from "./components/ButtonComponent";
 
 export const LoginContainer = ({}) => {
     const dispatch = useDispatch();
@@ -34,49 +36,47 @@ export const LoginContainer = ({}) => {
     return (
         <div>
             <form className="form-staff">
-                <div className="form-group">
-                    <fieldset>
-                        <label htmlFor="formGroupExampleInput">Email</label>
-                        <input name="email"
-                               type="text"
-                               className="form-control"
-                               id="formGroupExampleInput"
-                               placeholder="Enter Email"
-                               ref={register({
-                                   required: "Enter Email",
-                                   pattern: {
-                                       value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/i,
-                                       message: "Enter a valid email",
-                                   }
-                               })}
-                        />
-                        {errors.email && <p className="error error-staff">{errors.email.message}</p>}
-                    </fieldset>
-                </div>
-                <div className="form-group">
-                    <fieldset>
-                        <label htmlFor="formGroupExampleInput2">Password</label>
-                        <input name="password"
-                               type="password"
-                               className="form-control"
-                               id="formGroupExampleInput2"
-                               placeholder="password"
-                               ref={register({
-                                   required: "Enter password",
-                               })}
-                        />
-                        {errors.password && <p className="error error-staff"> {errors.password.message} </p>}
-                    </fieldset>
 
+                <InputComponent
+                    title="Email"
+                    htmlFor="formGroupExampleInput"
+                    type="text"
+                    className="form-control"
+                    name="email"
+                    error={errors.email}
+                    id="formGroupExampleInput"
+                    placeholder="Enter Email"
+                    inputRef={register({
+                        required: "Enter Email",
+                        pattern: {
+                            value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/i,
+                            message: "Enter a valid email",
+                        }
+                    })}
 
-                </div>
-                <button
-                    type="submit"
-                    onClick={handleSubmit(sendData)}
-                    disabled={errors.password || errors.email}
-                    className="btn btn-primary width-100"
-                >Submit
-                </button>
+                />
+
+                <InputComponent
+                    title="Password"
+                    htmlFor="formGroupExampleInput2"
+                    type="password"
+                    className="form-control"
+                    name="password"
+                    id="formGroupExampleInput2"
+                    placeholder="password"
+                    error={errors.password}
+                    inputRef={register({
+                        required: "Enter password",
+                    })}
+                />
+
+                <ButtonComponent
+                   type = "submit"
+                   onClick = {handleSubmit(sendData)}
+                   disabled = {errors.password || errors.email}
+                   className = "btn btn-primary width-100 btn-login"
+                   title = "Submit"
+                />
                 <GoogleLogin
                     clientId="584019000189-2bikvl7c5s002gdl55eaepo88hdjq3bg.apps.googleusercontent.com"
                     buttonText="Залогиниться через Google"
