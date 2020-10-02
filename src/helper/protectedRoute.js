@@ -1,15 +1,10 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
+import { useSelector } from 'react-redux';
 
-class ProtectedRoute extends React.Component {
-
-    render() {
-        const Component = this.props.component;
-
-        return window.localStorage.getItem('token')
-            ? <Component/>
-            : <Redirect to={{pathname: '/'}}/>;
-    }
+export const ProtectedRoute = ({render: Component}) => {
+    const isLogged = useSelector(state => state.user.isLogged);
+    return isLogged
+        ? <Component/>
+        : <Redirect to={{pathname: '/'}}/>;
 }
-
-export default ProtectedRoute;

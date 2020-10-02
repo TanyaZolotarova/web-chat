@@ -4,18 +4,18 @@ import {
     SIGN_IN_REQUEST_SUCCESS, SIGN_OUT, UPDATE_USER_SUCCESS
 } from "../actions/userActions";
 
-// const initialState = {
-//     user: {},
-//     token: ''
-// }
+const initialState = {
+    isLogged: Boolean(localStorage.getItem('token')),
+}
 
-export const user = (state= null , action) => {
+export const user = (state= initialState , action) => {
     switch (action.type) {
         case SIGN_IN_GOOGLE_SUCCESS:
             return {
                 ...state,
                 ...action.user.user,
                 token: action.user.token,
+                isLogged: true,
             }
             // console.log(action.user)
             // window.localStorage.setItem('token', action.user.token);
@@ -31,6 +31,7 @@ export const user = (state= null , action) => {
                 ...state,
                 ...action.data.user,
                 token: action.data.token,
+                isLogged: true,
             }
 
 
@@ -41,7 +42,9 @@ export const user = (state= null , action) => {
                 ...action.data,
             }
         case SIGN_OUT:
-            return {};
+            return {
+                isLogged: false,
+            };
         default:
             return {
                 ...state
