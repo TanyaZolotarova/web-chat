@@ -4,15 +4,16 @@ import MessageListComponent from "./components/messageListComponent";
 import {WebSocketContext} from "../WebSocket";
 import {GearIcon} from '@primer/octicons-react';
 import {useForm} from "react-hook-form";
-import {useDispatch} from "react-redux";
 import {logOut} from "../actions/userActions";
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
 
-import {logOut} from "../actions/userActions";
+
 import InputComponent from "./components/InputComponent";
 import {renderToStaticNodeStream} from "react-dom/server";
 import ButtonComponent from "./components/ButtonComponent";
+import {userSelector} from "../selectors/userSelector";
+
 
 const ChatContainer = ({}) => {
     const dispatch = useDispatch();
@@ -43,6 +44,7 @@ const ChatContainer = ({}) => {
     };
 
     useEffect(() => {
+
         const socket = connect();
 
         socket.on('updateUser', (user) => {
@@ -62,6 +64,7 @@ const ChatContainer = ({}) => {
         });
 
         socket.on('chatsList', (chatslist) => {
+
             setChats(chatslist);
         });
 
@@ -326,6 +329,7 @@ const ChatContainer = ({}) => {
                             <span> Создать чат </span>
                         </button>
                     </div>
+
                     <div className="modal fade" id="createChatModal" tabIndex="-1" role="dialog"
                          aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div className="modal-dialog">
@@ -361,18 +365,18 @@ const ChatContainer = ({}) => {
                                     dataDismiss="modal"
                                     title = "Close"
                                     />
-                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Close
-                                    </button>
-                                    <button type="button"
-                                            className="btn btn-primary"
-                                            onClick={() => {
+                                      <ButtonComponent
+                                    type="button"
+                                    className="btn btn-primary"
+                                    dataDismiss="modal"
+                                    title = "Save changes"
+                                     onClick={() => {
                                                 handleCreateChat()
                                             }}
-                                            data-dismiss="modal"
-                                            aria-label="Close"
-                                            disabled={selectedUsers.length <= 1}
-                                    >Save changes
-                                    </button>
+                                     ariaLabel="Close"
+                                     disabled={selectedUsers.length <= 1}
+                                    />
+
                                 </div>
                             </div>
                         </div>
