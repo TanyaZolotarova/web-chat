@@ -169,7 +169,9 @@ const ChatContainer = ({}) => {
                                         <div className="modal-content">
                                             <div className="modal-header">
                                                 <h5 className="modal-title" id="staticBackdropLabel">Настройки</h5>
-                                                <button type="button" className="close" data-dismiss="modal"
+                                                <button type="button"
+                                                        className="close"
+                                                        data-dismiss="modal"
                                                         aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
@@ -263,9 +265,9 @@ const ChatContainer = ({}) => {
                                                 />
                                                 <ButtonComponent
                                                     className=" mt-2 btn btn-outline-danger"
-                                                    data-dismiss="modal"
-                                                    ariaLabel="Close"
                                                     type="button"
+                                                    dataDismiss="modal"
+                                                    ariaLabel="Close"
                                                     onClick={() => {
                                                         clearReduxState()
                                                     }}
