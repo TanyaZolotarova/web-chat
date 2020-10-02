@@ -66,7 +66,7 @@ function MessageListComponent({chat, users }) {
                             <li key={m.id} className="replies">
                                 <img src="https://rozetked.me/images/uploads/dwoilp3BVjlE.jpg" alt="" />
                                 <p className="p">
-                                    <span className="name-block">{users[m.userId].name}: </span>
+                                    <span className="name-block">{users[m.userId].name} : </span>
                                     {/*<span className="name-block">{ getUser(m.userId).name }: </span>*/}
                                     <span className="messages-span">{m.message}</span>
                                 </p>

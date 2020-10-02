@@ -16,6 +16,7 @@ const initialState = {
 // }
 
 export const user = (state= initialState , action) => {
+// export const usersReducer = (state= null , action) => {
     switch (action.type) {
         case SIGN_IN_GOOGLE_SUCCESS:
             return {
