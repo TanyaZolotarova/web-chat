@@ -25,14 +25,15 @@ const ChatContainer = ({}) => {
 
 
     const [selectedUsers,setSelectedUsers] = useState([]);
+    console.log('==> SELECTED USERS ', selectedUsers)
 
     const [currentUser, setCurrentUser] = useState({});
-    console.log('==> CURRENT USER', currentUser);
+    // console.log('==> CURRENT USER', currentUser);
 
     const [chatname,setChatname] = useState('');
 
     const [chats, setChats] = useState([]);
-    console.log("==> CHATS ", chats)
+    // console.log("==> CHATS ", chats)
 
     const [users, setUsers] = useState([]);
     console.log('==> USERS ', users);
@@ -91,8 +92,8 @@ const ChatContainer = ({}) => {
         });
 
         socket.on('online-users', (users) => {
-            console.log("&&&&&&&&&&???????????????? ",users);
-            setUsers(users)
+            const usersByKey = Object.fromEntries(users.map((user) => [user.id, user]));
+            setUsers(usersByKey)
         });
 
         socket.emit('getUsersList', {});
@@ -276,9 +277,9 @@ const ChatContainer = ({}) => {
                                                 <button type="button"
                                                         className="btn btn-outline-success"
                                                         data-dismiss="modal"
-                                                        onClick={ () => {
+                                                        onClick={
                                                             handleSubmit(sendData)
-                                                        }}
+                                                         }
                                                         disabled={errors.password || errors.email}
                                                 >Edit
                                                 </button>
@@ -288,12 +289,8 @@ const ChatContainer = ({}) => {
                                                     data-dismiss="modal"
                                                     aria-label="Close"
                                                     type="button"
-                                                    // className='mt-2 btn  btn-outline-danger'
-                                                    onClick={() => {
-
-                                                        clearReduxState()
-
-                                                    }}>
+                                                    onClick={() => {clearReduxState()}
+                                                    }>
                                                     Logout
                                                 </button>
                                             </div>
@@ -324,9 +321,7 @@ const ChatContainer = ({}) => {
                                                 chat.id === activeChatID
                                                     ? 'contact active'
                                                     : "contact"}
-                                            onClick={() => {
-                                                setActiveChatID(chat.id)
-                                            }
+                                            onClick={() => {setActiveChatID(chat.id)}
                                             }>
                                             <div className="wrap">
                                                 <span className={isOnline ? 'contact-status online'
