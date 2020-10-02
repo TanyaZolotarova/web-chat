@@ -18,7 +18,7 @@ function App() {
             <div>
                 <Switch>
 
-                    <ProtectedRoute path='/chat' component={ChatContainer} />
+                    <ProtectedRoute path='/chat' component={ChatContainer}/>
                     {/*<ProtectedRoute exact={true} path='/' component={LoginContainer} />*/}
                     <Route exact={true} path='/'>
                         {localStorage.getItem('token') ? <Redirect to="/chat" /> : <LoginContainer/>}
