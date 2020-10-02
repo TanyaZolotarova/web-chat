@@ -27,17 +27,24 @@ const ChatContainer = ({}) => {
 
 
     const [selectedUsers, setSelectedUsers] = useState([]);
+    console.log('==> SELECTED USERS ', selectedUsers)
 
     const [currentUser, setCurrentUser] = useState({});
-    console.log('==> CURRENT USER', currentUser);
+    // console.log('==> CURRENT USER', currentUser);
 
     const [chatname, setChatname] = useState('');
 
     const [chats, setChats] = useState([]);
-    console.log("==> CHATS ", chats)
+    // console.log("==> CHATS ", chats)
 
     const [users, setUsers] = useState([]);
     console.log('==> USERS ', users);
+
+
+
+
+
+
 
 
     const [readOnly, setReadOnly] = useState(false);
@@ -87,8 +94,8 @@ const ChatContainer = ({}) => {
         });
 
         socket.on('online-users', (users) => {
-            console.log("&&&&&&&&&&???????????????? ", users);
-            setUsers(users)
+            const usersByKey = Object.fromEntries( users.map((user) => [user.id, user]));
+            setUsers(usersByKey)
         });
 
         socket.emit('getUsersList', {});
@@ -115,6 +122,7 @@ const ChatContainer = ({}) => {
     }, [currentUser])
 
 
+
     const handleCreateChat = () => {
         if (selectedUsers.length >= 1) {
             socket.emit('create-chat', {
@@ -136,6 +144,7 @@ const ChatContainer = ({}) => {
     const onRemove = (selectedList, removedItem) => {
         setSelectedUsers(selectedList);
     }
+
 
 
     return (
@@ -312,17 +321,17 @@ const ChatContainer = ({}) => {
                                                 chat.id === activeChatID
                                                     ? 'contact active'
                                                     : "contact"}
-                                            onClick={() => {
-                                                setActiveChatID(chat.id)
-                                            }
+                                            onClick={() => {setActiveChatID(chat.id)}
                                             }>
                                             <div className="wrap">
                                                 <span className={isOnline ? 'contact-status online'
                                                     : 'contact-status offline'}> </span>
-                                                <img className="chatlist contact" src={chatImage} alt=""/>
+                                                <img className="chatlist contact"  src={chatImage} alt=""/>
+
+
                                                 <div className="meta d-none d-md-inline-block">
                                                     <p className="name">
-                                                        {chat.chat_name}</p>
+                                                        { chat.chat_name }</p>
                                                 </div>
                                             </div>
                                         </li>
@@ -351,14 +360,14 @@ const ChatContainer = ({}) => {
                                         <input type="text" className="form-control" placeholder="Название чата"
                                                aria-label="Имя пользователя" aria-describedby="basic-addon1"
                                                onChange={(e) => setChatname(e.target.value)}
-                                               value={chatname}
+                                        value={chatname}
                                         />
                                     </div>
                                     <div className="input-group mb-3 text-black-50">
                                         <Multiselect
                                             options={
                                                 Object.values(users).filter(user => user.id !== currentUser.id)
-                                            } // Options to display in the dropdown
+                                                } // Options to display in the dropdown
                                             selectedValues={selectedUsers} // Preselected value to persist in dropdown
                                             onSelect={onSelect} // Function will trigger on select event
                                             onRemove={onRemove} // Function will trigger on remove event
