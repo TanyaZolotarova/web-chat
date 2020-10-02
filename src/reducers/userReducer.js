@@ -4,12 +4,12 @@ import {
     SIGN_IN_REQUEST_SUCCESS, SIGN_OUT, UPDATE_USER_SUCCESS
 } from "../actions/userActions";
 
-// const initialState = {
-//     user: {},
-//     token: ''
-// }
+const initialState = {
+    user: {},
+    token: ''
+}
 
-export const user = (state= null , action) => {
+export const usersReducer = (state= null , action) => {
     switch (action.type) {
         case SIGN_IN_GOOGLE_SUCCESS:
             return {

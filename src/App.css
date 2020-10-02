@@ -749,10 +749,10 @@ img.chatlist.contact {
   margin-bottom: 11px;
 }
 
-/*#frame .content .messages ul li:nth-last-child(1) {*/
-/*  margin-top: 5px;*/
-/*  !*margin-bottom: 20px;*!*/
-/*}*/
+#frame .content .messages ul li:nth-last-child(1) {
+  margin-top: 5px;
+  /*margin-bottom: 20px;*/
+}
 #frame .content .messages ul li.sent img {
   margin: 6px 8px 0 0;
 }

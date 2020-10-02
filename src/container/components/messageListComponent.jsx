@@ -8,6 +8,9 @@ import {WebSocketContext} from "../../WebSocket";
 function MessageListComponent({chat, users }) {
     const [currentMessage, setCurrentMessage] = useState('');
     const [messages, setMessages] = useState([]); // userId, chatId, email, name, text
+
+    console.log("messages", messages)
+
     const {socket} = useContext(WebSocketContext);
 
     const onMessageSubmit = () => {
