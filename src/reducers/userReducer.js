@@ -5,8 +5,15 @@ import {
 } from "../actions/userActions";
 
 const initialState = {
+    // user: {},
+    // token: '',
     isLogged: Boolean(localStorage.getItem('token')),
 }
+
+//fixme
+// export const usersReducer = (state= null , action) => {
+//
+// }
 
 export const user = (state= initialState , action) => {
     switch (action.type) {

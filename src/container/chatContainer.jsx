@@ -1,14 +1,13 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
+import { Multiselect } from 'multiselect-react-dropdown';
 import MessageListComponent from "./components/messageListComponent";
 import {WebSocketContext} from "../WebSocket";
 import {GearIcon} from '@primer/octicons-react';
 import {useForm} from "react-hook-form";
-import {useDispatch, useSelector} from "react-redux";
-import {useHistory} from "react-router-dom";
+import {useDispatch} from "react-redux";
 import {logOut} from "../actions/userActions";
 
 const ChatContainer = ({}) => {
-    const browserHistory = useHistory();
     const dispatch = useDispatch();
     const {register, handleSubmit, errors} = useForm(); // hook writing from form
     const {socket, connect} = useContext(WebSocketContext);
@@ -20,7 +19,9 @@ const ChatContainer = ({}) => {
         password: '',
     });
 
+    const [selectedUsers,setSelectedUsers] = useState([]);
     const [currentUser, setCurrentUser] = useState({});
+    const [chatname,setChatname] = useState('');
     const [chats, setChats] = useState([]);
     const [users, setUsers] = useState([]);
     const [onlineUsersIds, setOnlineUsersIds] = useState([]);
@@ -59,12 +60,23 @@ const ChatContainer = ({}) => {
             alert(data.message); // todo
         });
 
+        socket.on('online-users', (users) => {
+            const usersByKey = Object.fromEntries(users.map((user) => [user.id, user]));
+            setUsers(usersByKey)
+        });
+
         socket.emit('getUsersList', {});
 
         socket.on('usersList', (usersList) => {
-            console.log({usersList});
-            setUsers(usersList);
+            const usersByKey = Object.fromEntries(usersList.map((user) => [user.id, user]));
+            console.log({usersByKey});
+            setUsers(usersByKey);
         });
+//fixme
+        // socket.on('usersList', (usersList) => {
+        //     console.log({usersList});
+        //     setUsers(usersList);
+        // });
 
         socket.on('onlineUsersList', (onlineUsersList) => {
             // console.log({onlineUsersList});
@@ -77,6 +89,30 @@ const ChatContainer = ({}) => {
     const clearReduxState = () => {
         dispatch(logOut());
     };
+
+    const handleCreateChat = () => {
+        if(selectedUsers.length >= 1) {
+            socket.emit('create-chat', {
+                name: chatname,
+                users: [...selectedUsers.map(user => user.id)]
+            });
+        }
+    }
+
+    const getUsers = () => {
+        // console.log(test_users.find(opt => opt.email === "Sincere@april.biz"));
+        socket.emit('online-users', {});
+    }
+
+    const onSelect = (selectedList, selectedItem) => {
+        setSelectedUsers(selectedList);
+    }
+
+    const onRemove = (selectedList, removedItem) => {
+        setSelectedUsers(selectedList);
+    }
+
+
 
     return (
         <div className="body">
@@ -217,7 +253,6 @@ const ChatContainer = ({}) => {
                                                     data-dismiss="modal"
                                                     aria-label="Close"
                                                     type="button"
-                                                    // className='mt-2 btn  btn-outline-danger'
                                                     onClick={() => { clearReduxState()}}>
                                                     Logout
                                                 </button>
@@ -273,7 +308,9 @@ const ChatContainer = ({}) => {
                         </ul>
                     </div>
                     <div id="bottom-bar">
-                        <button id="addcontact" data-toggle="modal" data-target="#createChatModal">
+                        <button id="addcontact" data-toggle="modal" data-target="#createChatModal" onClick={ () => {
+                            getUsers()
+                        }}>
                             <span> Создать чат </span>
                         </button>
                     </div>
@@ -282,24 +319,40 @@ const ChatContainer = ({}) => {
                         <div className="modal-dialog">
                             <div className="modal-content">
                                 <div className="modal-header">
-                                    <h5 className="modal-title" id="exampleModalLabel">Modal title</h5>
+                                    <h5 className="modal-title" id="exampleModalLabel">Создать чат</h5>
                                     <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                     </button>
                                 </div>
                                 <div className="modal-body">
                                     <div className="input-group mb-3">
                                         <input type="text" className="form-control" placeholder="Название чата"
-                                               aria-label="Имя пользователя" aria-describedby="basic-addon1"/>
+                                               aria-label="Имя пользователя" aria-describedby="basic-addon1"
+                                               onChange={(e) => setChatname(e.target.value)}
+                                        value={chatname}
+                                        />
                                     </div>
-                                    <div className="input-group mb-3">
-                                        <input type="text" className="form-control" placeholder="Участники:"
-                                               aria-label="Имя пользователя" aria-describedby="basic-addon1"/>
+                                    <div className="input-group mb-3 text-black-50">
+                                        <Multiselect
+                                            options={
+                                                Object.values(users).filter(user => user.id !== currentUser.id)
+                                                } // Options to display in the dropdown
+                                            selectedValues={selectedUsers} // Preselected value to persist in dropdown
+                                            onSelect={onSelect} // Function will trigger on select event
+                                            onRemove={onRemove} // Function will trigger on remove event
+                                            displayValue="name" // Property name to display in the dropdown options
+                                        />
                                     </div>
                                 </div>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-secondary" data-dismiss="modal">Close
                                     </button>
-                                    <button type="button" className="btn btn-primary">Save changes</button>
+                                    <button type="button"
+                                            className="btn btn-primary"
+                                            onClick={ () => {handleCreateChat()}}
+                                            data-dismiss="modal"
+                                            aria-label="Close"
+                                            disabled={selectedUsers.length <= 1}
+                                    >Save changes</button>
                                 </div>
                             </div>
                         </div>
