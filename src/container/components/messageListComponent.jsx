@@ -1,16 +1,15 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
 import connect from "react-redux/lib/connect/connect";
 import {WebSocketContext} from "../../WebSocket";
+import Gravatar from 'react-gravatar'
 // import socket from "../../WebSocket";
 // import {useDispatch, useSelector} from "react-redux";
 // import {CancelTokenStatic as props} from "axios";
 
+
 function MessageListComponent({chat, users }) {
     const [currentMessage, setCurrentMessage] = useState('');
     const [messages, setMessages] = useState([]); // userId, chatId, email, name, text
-
-    console.log("messages", messages)
-
     const {socket} = useContext(WebSocketContext);
 
     const onMessageSubmit = () => {
@@ -29,6 +28,8 @@ function MessageListComponent({chat, users }) {
         document.querySelector('li.replies:nth-last-child(1)').scrollIntoView();
     };
 
+    // const getUser = (id) => users.find((user) => user.id === id);
+
     useEffect(() => {
         socket.on('message', (message) => {
             console.log('NEW MESSAGE!!!', JSON.stringify(message));
@@ -43,7 +44,6 @@ function MessageListComponent({chat, users }) {
 
         socket.on('chatHistory', (messagesList) => {
             setMessages(messagesList);
-            console.log('===> MESSAGES ', messages);
         });
 
         return () => {
@@ -67,6 +67,7 @@ function MessageListComponent({chat, users }) {
                                 <img src="https://rozetked.me/images/uploads/dwoilp3BVjlE.jpg" alt="" />
                                 <p className="p">
                                     <span className="name-block">{users[m.userId].name}: </span>
+                                    {/*<span className="name-block">{ getUser(m.userId).name }: </span>*/}
                                     <span className="messages-span">{m.message}</span>
                                 </p>
                             </li>
@@ -86,6 +87,7 @@ function MessageListComponent({chat, users }) {
                         value={currentMessage}
                         onChange={(e) => setCurrentMessage(e.target.value)}
                         onKeyPress={handleKeyPress}
+                        autoComplete="off"
                     />
 
                     <button onClick={onMessageSubmit}>
@@ -98,72 +100,3 @@ function MessageListComponent({chat, users }) {
 }
 
 export default MessageListComponent;
-
-// const renderChat = () => {
-//     if (!chat.length) {
-//         return null;
-//     }
-//     return chat.map(({name, text}, index) => (
-//         <div key={index}>
-//             {/*<h3>*/}
-//             {/*    {name}: <span>{message}</span>*/}
-//             {/*</h3>*/}
-//
-//             <ul>
-//                 <li className="replies">
-//                     <img src="https://rozetked.me/images/uploads/dwoilp3BVjlE.jpg" alt=""/>
-//                     <p className="p"><span className="name-block">{index.name}:</span>
-//                         <span className="messages-span"> </span> {index.text}
-//                     </p>
-//                 </li>
-//             </ul>
-//
-//         </div>
-//     ))
-// };
-
-
-// const [message, setMessage] = useState('');
-// const messages = [{message: 'Hello', id: 1, name: 'Anna'} , {message: 'Hi!', id: 2, name: "Andre"}];
-
-// const handleChange = (event) => {
-//     const {target} = event;
-//     setMessage( target.value
-//     )
-//     console.log("[=== message =====>]", message);
-// }
-// const handleSubmit = () => {
-//     const newMessage = messages.push({
-//         message: message,
-//         id: 1,
-//         name: 'Garry'
-//         //match.params.user.name
-//         //match.params.user.id
-//     })
-//     setMessage('')
-//     console.log("newMessage", newMessage);
-//     console.log("messages", messages);
-// }
-
-// const inputEl = useRef({text: '', id: '', name: ''});
-// const [connection, setConnection] = useState(null); // fixme
-
-// useEffect(() => {
-// setConnection(socket);
-
-// return () => {
-// Очистить подписку
-// };// on 'event' - listen  <== server
-// }, [])   // write here dependencies from handlers
-
-// const handleMessage = (messData) => {
-//     console.log('===[ messData ]=====>', messData);
-//     setChat([...chat, {...messData}])
-//     console.log("========[ AFTER setChat ]=======", chat);
-// };
-// socket.on('add_message', handleMessage);
-// const onTextChange = e => {
-//     console.log('ON TEXT CHANGE',)                                      //1 переделать
-//     setMessage({...message, [e.target.name]: e.target.value});
-//     console.log('===[ message ]=====>', message);
-// };

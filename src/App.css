@@ -564,6 +564,11 @@ ul{
 #frame #sidepanel #contacts ul li.contact .wrap span.online {
   background: #2ecc71;
 }
+
+#frame #sidepanel #contacts ul li.contact .wrap span.group {
+  background: #2fc8d6;
+}
+
 #frame #sidepanel #contacts ul li.contact .wrap span.away {
   background: #f1c40f;
 }
